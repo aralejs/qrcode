@@ -36,8 +36,8 @@ define(function(require, exports, module) {
 		var ctx = canvas.getContext('2d');
 
 		//计算每个点的长宽
-		var tileW = this.options.width / qrCodeAlg.getModuleCount();
-		var tileH = this.options.height / qrCodeAlg.getModuleCount();
+		var tileW = (this.options.width / qrCodeAlg.getModuleCount()).toPrecision(4);
+		var tileH = this.options.height / qrCodeAlg.getModuleCount().toPrecision(4);
 
 		//绘制
 		for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
