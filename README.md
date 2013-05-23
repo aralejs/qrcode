@@ -6,6 +6,8 @@
 
 注意：该组件只支持ASCII字符串
 
+[二维码编码原理](http://www.thonky.com/qr-code-tutorial/)
+
 ---
 
 ## 配置说明
@@ -63,3 +65,5 @@
 ### createSVG(null)
 
 使用svg来绘制二维码，返回svg节点。
+
+

@@ -43,14 +43,14 @@ define(function(require, exports, module) {
 		make: function() {
 			this.getRigthType();
 			this.dataCache = this.createData();
-			this.makeImpl(false, this.getBestMaskPattern());
+			this.createQrcode();
 		},
 		/**
 		 * 设置二位矩阵功能图形
 		 * @param  {bool} test 表示是否在寻找最好掩膜阶段        
 		 * @param  {num} maskPattern 掩膜的版本
 		 */
-		makeImpl: function(test, maskPattern) {
+		makeImpl: function(maskPattern) {
 
 			this.moduleCount = this.typeNumber * 4 + 17;
 			this.modules = new Array(this.moduleCount);
@@ -68,10 +68,10 @@ define(function(require, exports, module) {
 			this.setupPositionProbePattern(0, this.moduleCount - 7);
 			this.setupPositionAdjustPattern();
 			this.setupTimingPattern();
-			this.setupTypeInfo(test, maskPattern);
+			this.setupTypeInfo(true, maskPattern);
 
 			if (this.typeNumber >= 7) {
-				this.setupTypeNumber(test);
+				this.setupTypeNumber(true);
 			}
 			this.mapData(this.dataCache, maskPattern);
 		},
@@ -99,27 +99,34 @@ define(function(require, exports, module) {
 			}
 		},
 		/**
-		 * 获取最佳掩膜
+		 * 创建二维码
 		 * @return {[type]} [description]
 		 */
-		getBestMaskPattern: function() {
+		createQrcode: function() {
 
 			var minLostPoint = 0;
 			var pattern = 0;
+			var bestModules = null;
 
 			for (var i = 0; i < 8; i++) {
 
-				this.makeImpl(true, i);
+				var tempModules = this.makeImpl(i);
 
 				var lostPoint = QRUtil.getLostPoint(this);
 
 				if (i == 0 || minLostPoint > lostPoint) {
 					minLostPoint = lostPoint;
 					pattern = i;
+					bestModules = this.modules;
 				}
 			}
+			this.modules = bestModules;
+			this.setupTypeInfo(false, pattern);
 
-			return pattern;
+			if (this.typeNumber >= 7) {
+				this.setupTypeNumber(false);
+			}
+
 		},
 		/**
 		 * 设置定位图形
@@ -132,13 +139,11 @@ define(function(require, exports, module) {
 					continue;
 				}
 				this.modules[r][6] = (r % 2 == 0);
-			}
 
-			for (var c = 8; c < this.moduleCount - 8; c++) {
-				if (this.modules[6][c] != null) {
+				if (this.modules[6][r] != null) {
 					continue;
 				}
-				this.modules[6][c] = (c % 2 == 0);
+				this.modules[6][r] = (r % 2 == 0);
 			}
 		},
 		/**
@@ -175,7 +180,7 @@ define(function(require, exports, module) {
 			}
 		},
 		/**
-		 * 设置格式信息
+		 * 设置版本信息（7以上版本才有）
 		 * @param  {bool} test 是否处于判断最佳掩膜阶段
 		 * @return {[type]}      [description]
 		 */
@@ -186,21 +191,16 @@ define(function(require, exports, module) {
 			for (var i = 0; i < 18; i++) {
 				var mod = (!test && ((bits >> i) & 1) == 1);
 				this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
-			}
-
-			for (var i = 0; i < 18; i++) {
-				var mod = (!test && ((bits >> i) & 1) == 1);
 				this.modules[i % 3 + this.moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
 			}
 		},
 		/**
-		 * 设置版本信息
+		 * 设置格式信息（纠错等级和掩膜版本）
 		 * @param  {bool} test        
 		 * @param  {num} maskPattern 掩膜版本
 		 * @return {}             
 		 */
 		setupTypeInfo: function(test, maskPattern) {
-
 
 			var data = (QRErrorCorrectLevel[this.errorCorrectLevel] << 3) | maskPattern;
 			var bits = QRUtil.getBCHTypeInfo(data);
@@ -217,11 +217,8 @@ define(function(require, exports, module) {
 				} else {
 					this.modules[this.moduleCount - 15 + i][8] = mod;
 				}
-			}
 
 			// horizontal
-			for (var i = 0; i < 15; i++) {
-
 				var mod = (!test && ((bits >> i) & 1) == 1);
 
 				if (i < 8) {
@@ -329,12 +326,7 @@ define(function(require, exports, module) {
 				}
 			}
 
-			var totalCodeCount = 0;
-			for (var i = 0; i < rsBlocks.length; i++) {
-				totalCodeCount += rsBlocks[i][0];
-			}
-
-			var data = new Array(totalCodeCount);
+			var data = new Array(this.totalDataCount);
 			var index = 0;
 
 			for (var i = 0; i < maxDcCount; i++) {
@@ -579,7 +571,7 @@ define(function(require, exports, module) {
 			return a;
 		},
 		/*
-		补全二位矩阵的缺位
+		获取评价
 		 */
 		getLostPoint: function(qrCode) {
 
