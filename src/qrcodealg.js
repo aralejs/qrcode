@@ -41,7 +41,7 @@ define(function(require, exports, module) {
 		 * 编码
 		 */
 		make: function() {
-			this.getRigthType();
+			this.getRightType();
 			this.dataCache = this.createData();
 			this.createQrcode();
 		},
@@ -1057,7 +1057,7 @@ define(function(require, exports, module) {
 	 * 根据数据获取对应版本
 	 * @return {[type]} [description]
 	 */
-	QRCodeAlg.prototype.getRigthType = function() {
+	QRCodeAlg.prototype.getRightType = function() {
 		for (var typeNumber = 1; typeNumber < 41; typeNumber++) {
 			var rsBlock = RS_BLOCK_TABLE[(typeNumber - 1) * 4 + this.errorCorrectLevel];
 			if (rsBlock == undefined) {
