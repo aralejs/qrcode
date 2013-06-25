@@ -12,6 +12,12 @@
 
 ## 配置说明
 
+### render `string`
+
+配置用哪个节点元素画二维码，选项有“table”、"svg"和"canvas"
+
+默认的选择顺序为 canvas -> svg -> table
+ 
 ### text `string`
 
 要编码的ASCII字符串，只支持ASCII

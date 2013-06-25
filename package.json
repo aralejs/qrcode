@@ -1,5 +1,5 @@
 {
-  "family": "arale",
+  "family": "alipay",
   "name": "qrcode",
   "version": "1.0.0",
   "description": "The best project ever.",
@@ -12,7 +12,7 @@
   "spm": {
     "output": ["qrcode.js"],
     "alias": {
-      "$": "jquery/jquery/1.7.2/jquery",
+      "$": "$",
       "popup": "arale/popup/1.0.2/popup"
       },
     "devAlias": {},

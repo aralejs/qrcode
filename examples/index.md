@@ -3,30 +3,31 @@
 ---
 
 调用canvas画二维码
-<div id="qrcodeCanvas"></div>
+<div id="qrcodeDefault"></div>
 ````javascript
 seajs.use(['$','qrcode'], function($, qrcode){
-	var q = new qrcode({
-		background: "#eeeeee",
-		foreground: "#111111",
+	var qrnode = new qrcode({
+		//background: "#eeeeee",
+		//foreground: "#111111",
 		width: 300,
 		height: 300,
-		text	: "http://www.alipay.com"
+		text	: "19 months heihei~"
 	});
-	$('#qrcodeCanvas').append(q.createCanvas());
+	$('#qrcodeDefault').append(qrnode);
 });	
 ````
 调用table画二维码
 <div id="qrcodeTable"></div>
 ````javascript
 seajs.use(['$','qrcode'], function($, qrcode){
-	var q = new qrcode({
+	var qrnode = new qrcode({
+		render: "table",
 		correctLevel: 0,
 		text	: "http://www.alipay.com",
 		width: 250,
 		height: 250,	
 	});
-	$('#qrcodeTable').append(q.createTable());
+	$('#qrcodeTable').append(qrnode);
 });
 ````
 
@@ -34,11 +35,12 @@ seajs.use(['$','qrcode'], function($, qrcode){
 <div id="qrcodeSVG"></div>
 ````javascript
 seajs.use(['$','qrcode'], function($, qrcode){
-	var q = new qrcode({
+	var qrnode = new qrcode({
+		render : "svg",
 		text	: "http://www.alipay.com",
 		width : 400,
 		height: 250
 	});
-	$('#qrcodeSVG').append(q.createSVG());
+	$('#qrcodeSVG').append(qrnode);
 });
 ````

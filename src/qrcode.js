@@ -25,6 +25,34 @@ define(function(require, exports, module) {
 
 		//使用QRCodeAlg创建二维码结构 
 		var qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+
+		// var d = new Date();
+		// var start = d.getTime();
+		// for(var i=0; i<100; i++){
+		// 	this.createCanvas(qrCodeAlg);
+		// }
+		// d = new Date();
+		// var end = d.getTime();
+		// console.log(end-start);
+
+		// var d = new Date();
+		// var start = d.getTime();
+		// for(var i=0; i<100; i++){
+		// 	this.createTable(qrCodeAlg);
+		// }
+		// d = new Date();
+		// var end = d.getTime();
+		// console.log(end-start);
+
+		// var d = new Date();
+		// var start = d.getTime();
+		// for(var i=0; i<100; i++){
+		// 	this.createSVG(qrCodeAlg);
+		// }
+		// d = new Date();
+		// var end = d.getTime();
+		// console.log(end-start);
+
 		
 		if(this.options.render){
 			switch (this.options.render){
@@ -49,6 +77,9 @@ define(function(require, exports, module) {
 		var canvas = document.createElement('cavas');
 		if(canvas.getContext)
 			return this.createCanvas(qrCodeAlg);
+		SVG_NS = 'http://www.w3.org/2000/svg';
+    	if( !!document.createElementNS && !!document.createElementNS(SVG_NS, 'svg').createSVGRect )
+    		return this.createSVG(qrCodeAlg);
 		return this.createTable(qrCodeAlg);
 	};
 	qrcode.prototype.createCanvas = function(qrCodeAlg) {
