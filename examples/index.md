@@ -7,11 +7,9 @@
 ````javascript
 seajs.use(['$','qrcode'], function($, qrcode){
 	var qrnode = new qrcode({
-		//background: "#eeeeee",
-		//foreground: "#111111",
 		width: 300,
 		height: 300,
-		text	: "19 months heihei~"
+		text	: "http://www.alipay.com"
 	});
 	$('#qrcodeDefault').append(qrnode);
 });	

@@ -58,18 +58,4 @@
 
 默认：#000000
 
-## API
-
-### createCanvas(null)
-
-使用Canvas来绘制二维码，返回Canvas节点。
-
-### createTable(null)
-
-使用Table来绘制二维码，返回Table节点。
-
-### createSVG(null)
-
-使用svg来绘制二维码，返回svg节点。
-
 
