@@ -2,12 +2,12 @@
   "family": "alipay",
   "name": "qrcode",
   "version": "1.0.0",
-  "description": "The best project ever.",
+  "description": "二维码组件",
   "homepage": "https://github.com/littlebeat/qrcode",
   "author": "",
   "repository": "https://github.com/littlebeat/qrcode.git",
   "bugs": "",
-  "keywords": ["widget"],
+  "keywords": ["qrcode","二维码"],
   "licenses": "MIT",
   "spm": {
     "output": ["qrcode.js"],
@@ -19,5 +19,9 @@
     "engines": {
       "seajs": "seajs/seajs/2.0.0/sea.js"
     }
-  }
+  },
+  "maintainers":[{
+   "name": "倚松",
+   "email": "jiasong.hjs@alibaba-inc.com"
+}]
 }
