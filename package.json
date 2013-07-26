@@ -13,7 +13,8 @@
     "output": ["qrcode.js"],
     "alias": {
       "$": "$",
-      "popup": "arale/popup/1.0.2/popup"
+      "popup": "arale/popup/1.1.1/popup",
+      "gallery":"gallery/underscore/1.4.4/underscore"
       },
     "devAlias": {},
     "engines": {
