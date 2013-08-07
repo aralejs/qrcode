@@ -35,8 +35,6 @@ define(function(require, exports, module) {
 					return this.createTable(qrCodeAlg);
 				case "svg":
 					return this.createSVG(qrCodeAlg);
-				case "font":
-					return this.createFont(qrCodeAlg);
 				default:
 					return this.createDefault(qrCodeAlg);
 			}

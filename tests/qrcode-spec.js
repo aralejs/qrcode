@@ -56,6 +56,11 @@ define(function(require) {
         render:'canvas'
       });
     });
+    it('以如果render传入错误参数，以default形式显示', function() {
+      var qrnode = new qrcode({
+        render:'adsjlj'
+      });
+    });
     it('最长字符串', function() {
       var s = '';
       for(var i = 0; i < 2953; i++){
