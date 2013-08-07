@@ -15,6 +15,7 @@ define(function(require, exports, module) {
 		}
 		//设置默认参数
 		this.options = $.extend({}, {
+			text:"",
 			render: "",
 			width: 256,
 			height: 256,
@@ -34,6 +35,8 @@ define(function(require, exports, module) {
 					return this.createTable(qrCodeAlg);
 				case "svg":
 					return this.createSVG(qrCodeAlg);
+				case "font":
+					return this.createFont(qrCodeAlg);
 				default:
 					return this.createDefault(qrCodeAlg);
 			}
@@ -46,7 +49,7 @@ define(function(require, exports, module) {
 	 */
 	
 	qrcode.prototype.createDefault = function(qrCodeAlg) {
-		var canvas = document.createElement('cavas');
+		var canvas = document.createElement('canvas'); 
 		if(canvas.getContext)
 			return this.createCanvas(qrCodeAlg);
 		SVG_NS = 'http://www.w3.org/2000/svg';
@@ -77,72 +80,60 @@ define(function(require, exports, module) {
 		//返回绘制的节点
 		return canvas;
 	};
-
 	/**
 	 * 使用table来绘制二维码
 	 * @return {} 
 	 */
 	qrcode.prototype.createTable = function(qrCodeAlg) {
 		//创建table节点
-		var $table = $('<table></table>').css({
-			'border':'0px',
-			'margin':'0px',
-			'padding':'0px',
-			"border-collapse":"collapse",
-			'background-color': this.options.background
-			})
+		var $table = $('<table style="border:0px; margin:0px; padding:0px; border-collapse:collapse; background-color: '+
+			this.options.background +
+			';"></table>');
 		// 计算每个节点的长宽；取整，防止点之间出现分离
 		var tileW = Math.floor(this.options.width / qrCodeAlg.getModuleCount());
 		var tileH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
 
 		// 绘制二维码
+		var s = '',
+		foreTd = '<td style="border:0px; margin:0px; padding:0px; width:'+tileW+'px; background-color: '+this.options.foreground+'"></td>',
+		backTd = '<td style="border:0px; margin:0px; padding:0px; width:'+tileW+'px; background-color: '+this.options.background+'"></td>';
+ 
 		for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
-			var $row = $('<tr></tr>').css({
-				'border':'0px',
-				'margin':'0px',
-				'padding':'0px',
-				'height': tileH + "px"
-			}).appendTo($table);
+			s += '<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH +'px">';
 			for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
-				$('<td></td>').css({
-					'border':'0px',
-					'margin':'0px',
-					'padding':'0px',
-					'width': tileW + "px",
-					'background-color':qrCodeAlg.isDark(row, col) ? this.options.foreground : this.options.background
-				}).appendTo($row);
+				s += qrCodeAlg.isDark(row, col) ? foreTd : backTd;
 			}
+			s +='</tr>'; 
 		}
+		$table.html(s);
 		// 返回table节点
-		return $table;
+		return $table[0];
 	};
+	
+
 	/**
 	 * 使用SVG开绘制二维码
 	 * @return {} 
 	 */
 	qrcode.prototype.createSVG = function(qrCodeAlg) {
-		//svg命名空间	
-		var svgns = "http://www.w3.org/2000/svg";
-		//创建SVG节点
-		var $svg = $(document.createElementNS(svgns, 'svg:svg'))
-			.attr('height', this.options.height).attr('width', this.options.width);
-
+		var s = '<svg xmlns="http://www.w3.org/2000/svg" height="'+this.options.height+'" width="'+this.options.width+'">';
 		//计算每个二维码矩阵中每个点的长宽
 		var tileW = Math.floor(this.options.width / qrCodeAlg.getModuleCount());
 		var tileH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
-
+		var rectHead = '<rect ',
+		    foreRect = ' width="'+tileW+'" height="'+tileH+'" fill="'+this.options.foreground+'"></rect>',
+				backRect = ' width="'+tileW+'" height="'+tileH+'" fill="'+this.options.background+'"></rect>';
 		//绘制二维码
 		for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {			
 			for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
-				$(document.createElementNS(svgns, 'svg:rect'))
-					.attr('y',row*tileH).attr('x',col*tileW)
-					.attr('width', tileW ).attr('height', tileH)
-					.attr('fill', qrCodeAlg.isDark(row, col) ? this.options.foreground : this.options.background)
-					.appendTo($svg);
+				s += rectHead + ' y="' + row*tileH + '"" x="' + col*tileW +'"';
+				s += qrCodeAlg.isDark(row, col) ? foreRect : backRect;
 			}
 		}
+		s += '</svg>';
+		$svg = $(s);
 		//返回svg节点
-		return $svg;
+		return $svg[0];
 	};
 
 	module.exports = qrcode;

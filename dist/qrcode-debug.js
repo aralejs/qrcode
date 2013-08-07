@@ -15,20 +15,45 @@ define("alipay/qrcode/1.0.0/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
         }
         //设置默认参数
         this.options = $.extend({}, {
+            text: "",
+            render: "",
             width: 256,
             height: 256,
             correctLevel: 3,
             background: "#ffffff",
             foreground: "#000000"
         }, opt);
+        //使用QRCodeAlg创建二维码结构 
+        var qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+        if (this.options.render) {
+            switch (this.options.render) {
+              case "canvas":
+                return this.createCanvas(qrCodeAlg);
+
+              case "table":
+                return this.createTable(qrCodeAlg);
+
+              case "svg":
+                return this.createSVG(qrCodeAlg);
+
+              default:
+                return this.createDefault(qrCodeAlg);
+            }
+        }
+        return this.createDefault(qrCodeAlg);
     };
     /**
 	 * 使用Canvas来画二维码
 	 * @return {} 
 	 */
-    qrcode.prototype.createCanvas = function() {
-        //先使用ARCodeALg构造函数创建二维码
-        var qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+    qrcode.prototype.createDefault = function(qrCodeAlg) {
+        var canvas = document.createElement("canvas");
+        if (canvas.getContext) return this.createCanvas(qrCodeAlg);
+        SVG_NS = "http://www.w3.org/2000/svg";
+        if (!!document.createElementNS && !!document.createElementNS(SVG_NS, "svg").createSVGRect) return this.createSVG(qrCodeAlg);
+        return this.createTable(qrCodeAlg);
+    };
+    qrcode.prototype.createCanvas = function(qrCodeAlg) {
         //创建canvas节点
         var canvas = document.createElement("canvas");
         canvas.width = this.options.width;
@@ -53,9 +78,7 @@ define("alipay/qrcode/1.0.0/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
 	 * 使用table来绘制二维码
 	 * @return {} 
 	 */
-    qrcode.prototype.createTable = function() {
-        //使用QRCodeAlg创建二维码结构
-        var qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+    qrcode.prototype.createTable = function(qrCodeAlg) {
         //创建table节点
         var $table = $("<table></table>").css({
             border: "0px",
@@ -92,9 +115,7 @@ define("alipay/qrcode/1.0.0/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
 	 * 使用SVG开绘制二维码
 	 * @return {} 
 	 */
-    qrcode.prototype.createSVG = function() {
-        //使用QRCodeAlg创建二维码结构 
-        var qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+    qrcode.prototype.createSVG = function(qrCodeAlg) {
         //svg命名空间	
         var svgns = "http://www.w3.org/2000/svg";
         //创建SVG节点
@@ -162,7 +183,7 @@ define("alipay/qrcode/1.0.0/qrcodealg-debug", [], function(require, exports, mod
 		 * 编码
 		 */
         make: function() {
-            this.getRigthType();
+            this.getRightType();
             this.dataCache = this.createData();
             this.createQrcode();
         },
@@ -798,7 +819,7 @@ define("alipay/qrcode/1.0.0/qrcodealg-debug", [], function(require, exports, mod
 	 * 根据数据获取对应版本
 	 * @return {[type]} [description]
 	 */
-    QRCodeAlg.prototype.getRigthType = function() {
+    QRCodeAlg.prototype.getRightType = function() {
         for (var typeNumber = 1; typeNumber < 41; typeNumber++) {
             var rsBlock = RS_BLOCK_TABLE[(typeNumber - 1) * 4 + this.errorCorrectLevel];
             if (rsBlock == undefined) {

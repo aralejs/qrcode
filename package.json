@@ -12,13 +12,9 @@
   "spm": {
     "output": ["qrcode.js"],
     "alias": {
-      "$": "$",
-      "popup": "arale/popup/1.1.1/popup"
-      },
-    "devAlias": {},
-    "engines": {
-      "seajs": "seajs/seajs/2.0.0/sea.js"
-    }
+      "$": "$"
+    },
+    "devAlias": {}
   },
   "maintainers":[{
    "name": "倚松",

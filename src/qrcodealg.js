@@ -1061,7 +1061,7 @@ define(function(require, exports, module) {
 		for (var typeNumber = 1; typeNumber < 41; typeNumber++) {
 			var rsBlock = RS_BLOCK_TABLE[(typeNumber - 1) * 4 + this.errorCorrectLevel];
 			if (rsBlock == undefined) {
-				throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + errorCorrectLevel);
+				throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + this.errorCorrectLevel);
 			}
 			var length = rsBlock.length / 3;
 			var totalDataCount = 0;
@@ -1072,7 +1072,7 @@ define(function(require, exports, module) {
 			}
 
 			var lengthBytes = typeNumber > 9 ? 2 : 1;
-			if (this.data.length + lengthBytes < totalDataCount) {
+			if (this.data.length + lengthBytes < totalDataCount　|| typeNumber == 40) {
 				this.typeNumber = typeNumber;
 				this.rsBlock = rsBlock;
 				this.totalDataCount = totalDataCount;
