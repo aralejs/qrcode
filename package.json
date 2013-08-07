@@ -1,7 +1,7 @@
 {
   "family": "alipay",
   "name": "qrcode",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "二维码组件",
   "homepage": "https://github.com/littlebeat/qrcode",
   "author": "",
