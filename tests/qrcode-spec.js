@@ -1,7 +1,7 @@
 
 define(function(require) {
 
-  var qrcode = require('../src/qrcode');
+  var qrcode = require('qrcode');
   var $ = require('$');
   var expect = require('expect');
 
