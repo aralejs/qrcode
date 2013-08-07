@@ -1072,7 +1072,7 @@ define(function(require, exports, module) {
 			}
 
 			var lengthBytes = typeNumber > 9 ? 2 : 1;
-			if (this.data.length + lengthBytes < totalDataCount　|| typeNumber == 40) {
+			if (this.data.length + lengthBytes < totalDataCount || typeNumber == 40) {
 				this.typeNumber = typeNumber;
 				this.rsBlock = rsBlock;
 				this.totalDataCount = totalDataCount;
