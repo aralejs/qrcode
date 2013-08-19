@@ -3,7 +3,7 @@
   "name": "qrcode",
   "version": "1.0.1",
   "description": "二维码组件",
-  "homepage": "https://github.com/littlebeat/qrcode",
+  "homepage": "http://gitlab.alibaba-inc.com/alipay-js/qrcode",
   "author": "倚松 <jiasong.hjs@alibaba-inc.com>",
   "repository": {
     "type": "git",
