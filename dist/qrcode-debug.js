@@ -1,4 +1,4 @@
-define("alipay/qrcode/1.0.0/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], function(require, exports, module) {
+define("alipay/qrcode/1.0.1/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var QRCodeAlg = require("./qrcodealg-debug");
     /**
@@ -80,62 +80,49 @@ define("alipay/qrcode/1.0.0/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
 	 */
     qrcode.prototype.createTable = function(qrCodeAlg) {
         //创建table节点
-        var $table = $("<table></table>").css({
-            border: "0px",
-            margin: "0px",
-            padding: "0px",
-            "border-collapse": "collapse",
-            "background-color": this.options.background
-        });
+        var $table = $('<table style="border:0px; margin:0px; padding:0px; border-collapse:collapse; background-color: ' + this.options.background + ';"></table>');
         // 计算每个节点的长宽；取整，防止点之间出现分离
         var tileW = Math.floor(this.options.width / qrCodeAlg.getModuleCount());
         var tileH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
         // 绘制二维码
+        var s = "", foreTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.foreground + '"></td>', backTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.background + '"></td>';
         for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
-            var $row = $("<tr></tr>").css({
-                border: "0px",
-                margin: "0px",
-                padding: "0px",
-                height: tileH + "px"
-            }).appendTo($table);
+            s += '<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH + 'px">';
             for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
-                $("<td></td>").css({
-                    border: "0px",
-                    margin: "0px",
-                    padding: "0px",
-                    width: tileW + "px",
-                    "background-color": qrCodeAlg.isDark(row, col) ? this.options.foreground : this.options.background
-                }).appendTo($row);
+                s += qrCodeAlg.isDark(row, col) ? foreTd : backTd;
             }
+            s += "</tr>";
         }
+        $table.html(s);
         // 返回table节点
-        return $table;
+        return $table[0];
     };
     /**
 	 * 使用SVG开绘制二维码
 	 * @return {} 
 	 */
     qrcode.prototype.createSVG = function(qrCodeAlg) {
-        //svg命名空间	
-        var svgns = "http://www.w3.org/2000/svg";
-        //创建SVG节点
-        var $svg = $(document.createElementNS(svgns, "svg:svg")).attr("height", this.options.height).attr("width", this.options.width);
+        var s = '<svg xmlns="http://www.w3.org/2000/svg" height="' + this.options.height + '" width="' + this.options.width + '">';
         //计算每个二维码矩阵中每个点的长宽
         var tileW = Math.floor(this.options.width / qrCodeAlg.getModuleCount());
         var tileH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
+        var rectHead = "<rect ", foreRect = ' width="' + tileW + '" height="' + tileH + '" fill="' + this.options.foreground + '"></rect>', backRect = ' width="' + tileW + '" height="' + tileH + '" fill="' + this.options.background + '"></rect>';
         //绘制二维码
         for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
             for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
-                $(document.createElementNS(svgns, "svg:rect")).attr("y", row * tileH).attr("x", col * tileW).attr("width", tileW).attr("height", tileH).attr("fill", qrCodeAlg.isDark(row, col) ? this.options.foreground : this.options.background).appendTo($svg);
+                s += rectHead + ' y="' + row * tileH + '"" x="' + col * tileW + '"';
+                s += qrCodeAlg.isDark(row, col) ? foreRect : backRect;
             }
         }
+        s += "</svg>";
+        $svg = $(s);
         //返回svg节点
-        return $svg;
+        return $svg[0];
     };
     module.exports = qrcode;
 });
 
-define("alipay/qrcode/1.0.0/qrcodealg-debug", [], function(require, exports, module) {
+define("alipay/qrcode/1.0.1/qrcodealg-debug", [], function(require, exports, module) {
     /**
 	 * 二维码算法实现
 	 * @param {string} data              要编码的信息字符串
@@ -823,7 +810,7 @@ define("alipay/qrcode/1.0.0/qrcodealg-debug", [], function(require, exports, mod
         for (var typeNumber = 1; typeNumber < 41; typeNumber++) {
             var rsBlock = RS_BLOCK_TABLE[(typeNumber - 1) * 4 + this.errorCorrectLevel];
             if (rsBlock == undefined) {
-                throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + errorCorrectLevel);
+                throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + this.errorCorrectLevel);
             }
             var length = rsBlock.length / 3;
             var totalDataCount = 0;
@@ -833,7 +820,7 @@ define("alipay/qrcode/1.0.0/qrcodealg-debug", [], function(require, exports, mod
                 totalDataCount += dataCount * count;
             }
             var lengthBytes = typeNumber > 9 ? 2 : 1;
-            if (this.data.length + lengthBytes < totalDataCount) {
+            if (this.data.length + lengthBytes < totalDataCount || typeNumber == 40) {
                 this.typeNumber = typeNumber;
                 this.rsBlock = rsBlock;
                 this.totalDataCount = totalDataCount;
