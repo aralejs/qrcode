@@ -4,9 +4,11 @@
   "version": "1.0.1",
   "description": "二维码组件",
   "homepage": "https://github.com/littlebeat/qrcode",
-  "author": "",
-  "repository": "https://github.com/littlebeat/qrcode.git",
-  "bugs": "",
+  "author": "倚松 <jiasong.hjs@alibaba-inc.com>",
+  "repository": "http://gitlab.alibaba-inc.com/alipay-js/qrcode",
+  "bugs": {
+    "url": "http://gitlab.alibaba-inc.com/alipay-js/qrcode/issues"
+  },
   "keywords": ["qrcode","二维码"],
   "licenses": "MIT",
   "spm": {
