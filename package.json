@@ -12,7 +12,7 @@
   "bugs": {
     "url": "http://gitlab.alibaba-inc.com/alipay-js/qrcode/issues"
   },
-  "keywords": ["qrcode","二维码"],
+  "keywords": ["qrcode", "二维码"],
   "licenses": "MIT",
   "spm": {
     "output": ["qrcode.js"],
@@ -21,8 +21,15 @@
     },
     "devAlias": {}
   },
-  "maintainers":[{
-   "name": "倚松",
-   "email": "jiasong.hjs@alibaba-inc.com"
-}]
+  "maintainers": [
+    {
+      "name": "倚松",
+      "email": "jiasong.hjs@alibaba-inc.com"
+    }
+  ],
+  "devDependencies": {
+    "nico": "*",
+    "mocha-browser": "*",
+    "jscoverage": "~0.3.7"
+  }
 }
