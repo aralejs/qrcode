@@ -1,5 +1,4 @@
 REPORTER = spec
-url = tests/runner.html
 
 install:
 	rm -fr _theme
