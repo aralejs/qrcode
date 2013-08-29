@@ -2,6 +2,8 @@
 
 ---
 
+[![Build Status](http://toast.corp.taobao.com/task/state/id/3476)](http://toast.corp.taobao.com/task/view/id/3476)
+
 二维码组件，用于绘制二维码
 
 注意：该组件只支持ASCII字符串
