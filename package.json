@@ -21,12 +21,7 @@
     },
     "devAlias": {}
   },
-  "maintainers": [
-    {
-      "name": "倚松",
-      "email": "jiasong.hjs@alibaba-inc.com"
-    }
-  ],
+  "maintainers": [ "倚松 <jiasong.hjs@alibaba-inc.com>" ],
   "devDependencies": {
     "nico": "*",
     "mocha-browser": "*",
