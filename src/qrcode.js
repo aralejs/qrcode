@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
 	var $ = require('$');
 	var QRCodeAlg = require('./qrcodealg');
+	var qrcodeAlgObjCache = [];
 
 	/**
 	 * 二维码构造函数，主要用于绘制
@@ -25,7 +26,17 @@ define(function(require, exports, module) {
 		}, opt);
 
 		//使用QRCodeAlg创建二维码结构 
-		var qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+		var qrCodeAlg = null;
+		for(var i = 0, l = qrcodeAlgObjCache.length; i < l; i++){
+			if(qrcodeAlgObjCache[i].text == this.options.text){
+				qrCodeAlg = qrcodeAlgObjCache[i].obj;
+				break;
+			}
+		}
+		if(i == l){
+		  qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+		  qrcodeAlgObjCache.push({text:this.options.text, obj:qrCodeAlg});
+		}
 		
 		if(this.options.render){
 			switch (this.options.render){

@@ -21,7 +21,7 @@ seajs.use(['$','qrcode'], function($, qrcode){
 	var qrnode = new qrcode({
 		render: "table",
 		correctLevel: 0,
-		text	: "http://www.alipay.com",
+		text	: "http://www.alipay.com/hello",
 		width: 250,
 		height: 250,	
 	});
@@ -35,7 +35,7 @@ seajs.use(['$','qrcode'], function($, qrcode){
 seajs.use(['$','qrcode'], function($, qrcode){
 	var qrnode = new qrcode({
 		render : "svg",
-		text	: "http://www.alipay.com",
+		text	: "http://www.alipay.com/hello",
 		width : 400,
 		height: 250
 	});
