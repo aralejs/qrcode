@@ -1,6 +1,7 @@
-define("alipay/qrcode/1.0.1/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], function(require, exports, module) {
+define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var QRCodeAlg = require("./qrcodealg-debug");
+    var qrcodeAlgObjCache = [];
     /**
 	 * 二维码构造函数，主要用于绘制
 	 * @param  {参数列表} opt 传递参数
@@ -24,7 +25,20 @@ define("alipay/qrcode/1.0.1/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
             foreground: "#000000"
         }, opt);
         //使用QRCodeAlg创建二维码结构 
-        var qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+        var qrCodeAlg = null;
+        for (var i = 0, l = qrcodeAlgObjCache.length; i < l; i++) {
+            if (qrcodeAlgObjCache[i].text == this.options.text) {
+                qrCodeAlg = qrcodeAlgObjCache[i].obj;
+                break;
+            }
+        }
+        if (i == l) {
+            qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
+            qrcodeAlgObjCache.push({
+                text: this.options.text,
+                obj: qrCodeAlg
+            });
+        }
         if (this.options.render) {
             switch (this.options.render) {
               case "canvas":
@@ -85,15 +99,15 @@ define("alipay/qrcode/1.0.1/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
         var tileW = Math.floor(this.options.width / qrCodeAlg.getModuleCount());
         var tileH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
         // 绘制二维码
-        var s = "", foreTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.foreground + '"></td>', backTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.background + '"></td>';
-        for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
-            s += '<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH + 'px">';
-            for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
-                s += qrCodeAlg.isDark(row, col) ? foreTd : backTd;
+        var s = [], foreTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.foreground + '"></td>', backTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.background + '"></td>', l = qrCodeAlg.getModuleCount();
+        for (var row = 0; row < l; row++) {
+            s.push('<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH + 'px">');
+            for (var col = 0; col < l; col++) {
+                s.push(qrCodeAlg.isDark(row, col) ? foreTd : backTd);
             }
-            s += "</tr>";
+            s.push("</tr>");
         }
-        $table.html(s);
+        $table.html(s.join(""));
         // 返回table节点
         return $table[0];
     };
@@ -122,7 +136,7 @@ define("alipay/qrcode/1.0.1/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
     module.exports = qrcode;
 });
 
-define("alipay/qrcode/1.0.1/qrcodealg-debug", [], function(require, exports, module) {
+define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, module) {
     /**
 	 * 二维码算法实现
 	 * @param {string} data              要编码的信息字符串
@@ -582,7 +596,7 @@ define("alipay/qrcode/1.0.1/qrcodealg-debug", [], function(require, exports, mod
             for (var row = 0; row < moduleCount; row++) {
                 for (var col = 0; col < moduleCount; col++) {
                     var sameCount = 0;
-                    var dark = qrCode.isDark(row, col);
+                    var dark = qrCode.modules[row][col];
                     for (var r = -1; r <= 1; r++) {
                         if (row + r < 0 || moduleCount <= row + r) {
                             continue;
@@ -594,7 +608,7 @@ define("alipay/qrcode/1.0.1/qrcodealg-debug", [], function(require, exports, mod
                             if (r == 0 && c == 0) {
                                 continue;
                             }
-                            if (dark == qrCode.isDark(row + r, col + c)) {
+                            if (dark == qrCode.modules[row + r][col + c]) {
                                 sameCount++;
                             }
                         }
@@ -608,10 +622,10 @@ define("alipay/qrcode/1.0.1/qrcodealg-debug", [], function(require, exports, mod
             for (var row = 0; row < moduleCount - 1; row++) {
                 for (var col = 0; col < moduleCount - 1; col++) {
                     var count = 0;
-                    if (qrCode.isDark(row, col)) count++;
-                    if (qrCode.isDark(row + 1, col)) count++;
-                    if (qrCode.isDark(row, col + 1)) count++;
-                    if (qrCode.isDark(row + 1, col + 1)) count++;
+                    if (qrCode.modules[row][col]) count++;
+                    if (qrCode.modules[row + 1][col]) count++;
+                    if (qrCode.modules[row][col + 1]) count++;
+                    if (qrCode.modules[row + 1][col + 1]) count++;
                     if (count == 0 || count == 4) {
                         lostPoint += 3;
                     }
@@ -620,14 +634,14 @@ define("alipay/qrcode/1.0.1/qrcodealg-debug", [], function(require, exports, mod
             // LEVEL3
             for (var row = 0; row < moduleCount; row++) {
                 for (var col = 0; col < moduleCount - 6; col++) {
-                    if (qrCode.isDark(row, col) && !qrCode.isDark(row, col + 1) && qrCode.isDark(row, col + 2) && qrCode.isDark(row, col + 3) && qrCode.isDark(row, col + 4) && !qrCode.isDark(row, col + 5) && qrCode.isDark(row, col + 6)) {
+                    if (qrCode.modules[row][col] && !qrCode.modules[row][col + 1] && qrCode.modules[row][col + 2] && qrCode.modules[row][col + 3] && qrCode.modules[row][col + 4] && !qrCode.modules[row][col + 5] && qrCode.modules[row][col + 6]) {
                         lostPoint += 40;
                     }
                 }
             }
             for (var col = 0; col < moduleCount; col++) {
                 for (var row = 0; row < moduleCount - 6; row++) {
-                    if (qrCode.isDark(row, col) && !qrCode.isDark(row + 1, col) && qrCode.isDark(row + 2, col) && qrCode.isDark(row + 3, col) && qrCode.isDark(row + 4, col) && !qrCode.isDark(row + 5, col) && qrCode.isDark(row + 6, col)) {
+                    if (qrCode.modules[row][col] && !qrCode.modules[row + 1][col] && qrCode.modules[row + 2][col] && qrCode.modules[row + 3][col] && qrCode.modules[row + 4][col] && !qrCode.modules[row + 5][col] && qrCode.modules[row + 6][col]) {
                         lostPoint += 40;
                     }
                 }
@@ -636,7 +650,7 @@ define("alipay/qrcode/1.0.1/qrcodealg-debug", [], function(require, exports, mod
             var darkCount = 0;
             for (var col = 0; col < moduleCount; col++) {
                 for (var row = 0; row < moduleCount; row++) {
-                    if (qrCode.isDark(row, col)) {
+                    if (qrCode.modules[row][col]) {
                         darkCount++;
                     }
                 }

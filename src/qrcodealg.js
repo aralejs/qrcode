@@ -586,7 +586,7 @@ define(function(require, exports, module) {
 				for (var col = 0; col < moduleCount; col++) {
 
 					var sameCount = 0;
-					var dark = qrCode.isDark(row, col);
+					var dark = qrCode.modules[row][ col];
 
 					for (var r = -1; r <= 1; r++) {
 
@@ -604,7 +604,7 @@ define(function(require, exports, module) {
 								continue;
 							}
 
-							if (dark == qrCode.isDark(row + r, col + c)) {
+							if (dark == qrCode.modules[row + r][ col + c]) {
 								sameCount++;
 							}
 						}
@@ -621,10 +621,10 @@ define(function(require, exports, module) {
 			for (var row = 0; row < moduleCount - 1; row++) {
 				for (var col = 0; col < moduleCount - 1; col++) {
 					var count = 0;
-					if (qrCode.isDark(row, col)) count++;
-					if (qrCode.isDark(row + 1, col)) count++;
-					if (qrCode.isDark(row, col + 1)) count++;
-					if (qrCode.isDark(row + 1, col + 1)) count++;
+					if (qrCode.modules[row][ col]) count++;
+					if (qrCode.modules[row + 1][ col]) count++;
+					if (qrCode.modules[row][ col + 1]) count++;
+					if (qrCode.modules[row + 1][ col + 1]) count++;
 					if (count == 0 || count == 4) {
 						lostPoint += 3;
 					}
@@ -635,7 +635,7 @@ define(function(require, exports, module) {
 
 			for (var row = 0; row < moduleCount; row++) {
 				for (var col = 0; col < moduleCount - 6; col++) {
-					if (qrCode.isDark(row, col) && !qrCode.isDark(row, col + 1) && qrCode.isDark(row, col + 2) && qrCode.isDark(row, col + 3) && qrCode.isDark(row, col + 4) && !qrCode.isDark(row, col + 5) && qrCode.isDark(row, col + 6)) {
+					if (qrCode.modules[row][ col] && !qrCode.modules[row][ col + 1] && qrCode.modules[row][ col + 2] && qrCode.modules[row][ col + 3] && qrCode.modules[row][ col + 4] && !qrCode.modules[row][ col + 5] && qrCode.modules[row][ col + 6]) {
 						lostPoint += 40;
 					}
 				}
@@ -643,7 +643,7 @@ define(function(require, exports, module) {
 
 			for (var col = 0; col < moduleCount; col++) {
 				for (var row = 0; row < moduleCount - 6; row++) {
-					if (qrCode.isDark(row, col) && !qrCode.isDark(row + 1, col) && qrCode.isDark(row + 2, col) && qrCode.isDark(row + 3, col) && qrCode.isDark(row + 4, col) && !qrCode.isDark(row + 5, col) && qrCode.isDark(row + 6, col)) {
+					if (qrCode.modules[row][ col] && !qrCode.modules[row + 1][ col] && qrCode.modules[row + 2][ col] && qrCode.modules[row + 3][ col] && qrCode.modules[row + 4][ col] && !qrCode.modules[row + 5][ col] && qrCode.modules[row + 6][ col]) {
 						lostPoint += 40;
 					}
 				}
@@ -655,7 +655,7 @@ define(function(require, exports, module) {
 
 			for (var col = 0; col < moduleCount; col++) {
 				for (var row = 0; row < moduleCount; row++) {
-					if (qrCode.isDark(row, col)) {
+					if (qrCode.modules[row][ col]) {
 						darkCount++;
 					}
 				}
