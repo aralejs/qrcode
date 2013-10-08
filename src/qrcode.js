@@ -103,18 +103,21 @@ define(function(require, exports, module) {
 		var tileH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
 
 		// 绘制二维码
-		var s = '',
-		foreTd = '<td style="border:0px; margin:0px; padding:0px; width:'+tileW+'px; background-color: '+this.options.foreground+'"></td>',
-		backTd = '<td style="border:0px; margin:0px; padding:0px; width:'+tileW+'px; background-color: '+this.options.background+'"></td>';
- 
-		for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
-			s += '<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH +'px">';
-			for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
-				s += qrCodeAlg.isDark(row, col) ? foreTd : backTd;
+		var s = [],
+				foreTd = '<td style="border:0px; margin:0px; padding:0px; width:'+tileW+'px; background-color: '+this.options.foreground+'"></td>',
+				backTd = '<td style="border:0px; margin:0px; padding:0px; width:'+tileW+'px; background-color: '+this.options.background+'"></td>',
+	  		l =  qrCodeAlg.getModuleCount();
+
+		for (var row = 0; row < l; row++) {
+			s.push('<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH +'px">');
+			for (var col = 0; col < l; col++) {
+				s.push(qrCodeAlg.isDark(row, col) ? foreTd : backTd);
 			}
-			s +='</tr>'; 
+			s.push('</tr>'); 
 		}
-		$table.html(s);
+
+		$table.html(s.join(''));
+		
 		// 返回table节点
 		return $table[0];
 	};
