@@ -7,7 +7,7 @@
 ````javascript
 seajs.use(['$','qrcode'], function($, qrcode){
 	var qrnode = new qrcode({
-		text	: "http://www.alipay.com"
+		text	: "http://www.alipay.com/hello?nice=to?meet=you?#3"
 	});
 	$('#qrcodeDefault').append(qrnode);
 });	
@@ -52,7 +52,7 @@ seajs.use(['$','qrcode'], function($, qrcode){
 seajs.use(['$','qrcode'], function($, qrcode){
 	var qrnode = new qrcode({
 		render : "svg",
-		text	: "http://www.alipay.com/hello",
+		text	: "http://www.alipay.com/",
 		width : 400,
 		height: 250
 	});

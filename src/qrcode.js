@@ -28,14 +28,14 @@ define(function(require, exports, module) {
 		//使用QRCodeAlg创建二维码结构 
 		var qrCodeAlg = null;
 		for(var i = 0, l = qrcodeAlgObjCache.length; i < l; i++){
-			if(qrcodeAlgObjCache[i].text == this.options.text){
+			if(qrcodeAlgObjCache[i].text == this.options.text && qrcodeAlgObjCache[i].text.correctLevel == this.options.correctLevel){
 				qrCodeAlg = qrcodeAlgObjCache[i].obj;
 				break;
 			}
 		}
 		if(i == l){
 		  qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
-		  qrcodeAlgObjCache.push({text:this.options.text, obj:qrCodeAlg});
+		  qrcodeAlgObjCache.push({text:this.options.text, correctLevel: this.options.correctLevel, obj:qrCodeAlg});
 		}
 		
 		if(this.options.render){

@@ -27,7 +27,7 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
         //使用QRCodeAlg创建二维码结构 
         var qrCodeAlg = null;
         for (var i = 0, l = qrcodeAlgObjCache.length; i < l; i++) {
-            if (qrcodeAlgObjCache[i].text == this.options.text) {
+            if (qrcodeAlgObjCache[i].text == this.options.text && qrcodeAlgObjCache[i].text.correctLevel == this.options.correctLevel) {
                 qrCodeAlg = qrcodeAlgObjCache[i].obj;
                 break;
             }
@@ -36,6 +36,7 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
             qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
             qrcodeAlgObjCache.push({
                 text: this.options.text,
+                correctLevel: this.options.correctLevel,
                 obj: qrCodeAlg
             });
         }
@@ -851,11 +852,11 @@ define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, mod
     QRBitBuffer.prototype = {
         get: function(index) {
             var bufIndex = Math.floor(index / 8);
-            return (this.buffer[bufIndex] >>> 7 - index % 8 & 1) == 1;
+            return this.buffer[bufIndex] >>> 7 - index % 8 & 1;
         },
         put: function(num, length) {
             for (var i = 0; i < length; i++) {
-                this.putBit((num >>> length - i - 1 & 1) == 1);
+                this.putBit(num >>> length - i - 1 & 1);
             }
         },
         putBit: function(bit) {
