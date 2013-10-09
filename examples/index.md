@@ -2,13 +2,11 @@
 
 ---
 
-调用canvas画二维码
+采用默认方式画二维码
 <div id="qrcodeDefault"></div>
 ````javascript
 seajs.use(['$','qrcode'], function($, qrcode){
 	var qrnode = new qrcode({
-		width: 300,
-		height: 300,
 		text	: "http://www.alipay.com"
 	});
 	$('#qrcodeDefault').append(qrnode);
@@ -23,11 +21,30 @@ seajs.use(['$','qrcode'], function($, qrcode){
 		correctLevel: 0,
 		text	: "http://www.alipay.com/hello",
 		width: 250,
-		height: 250,	
+		height: 250	
 	});
 	$('#qrcodeTable').append(qrnode);
 });
 ````
+
+调用canvas画二维码
+<div id="qrcodeCanvas"></div>
+````javascript
+seajs.use(['$','qrcode'], function($, qrcode){
+	var qrnode = new qrcode({
+		render: "canvas",
+		correctLevel: 0,
+		text	: "http://www.alipay.com/hello",
+		width: 200,
+		height: 200,
+		background:"#eeeeee",
+		foreground:"#667766"
+	});
+	$('#qrcodeCanvas').append(qrnode);
+});
+````
+
+
 
 调用svg画二维码
 <div id="qrcodeSVG"></div>

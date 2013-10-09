@@ -80,7 +80,7 @@ define(function(require, exports, module) {
 		//绘制
 		for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
 			for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
-				ctx.fillStyle = qrCodeAlg.isDark(row, col) ? this.options.foreground : this.options.background;
+				ctx.fillStyle = qrCodeAlg.modules[row][ col] ? this.options.foreground : this.options.background;
 				var w = (Math.ceil((col + 1) * tileW) - Math.floor(col * tileW));
 				var h = (Math.ceil((row + 1) * tileW) - Math.floor(row * tileW));
 				ctx.fillRect(Math.round(col * tileW), Math.round(row * tileH), w, h);
@@ -111,7 +111,7 @@ define(function(require, exports, module) {
 		for (var row = 0; row < l; row++) {
 			s.push('<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH +'px">');
 			for (var col = 0; col < l; col++) {
-				s.push(qrCodeAlg.isDark(row, col) ? foreTd : backTd);
+				s.push(qrCodeAlg.modules[row][col] ? foreTd : backTd);
 			}
 			s.push('</tr>'); 
 		}
@@ -139,7 +139,7 @@ define(function(require, exports, module) {
 		for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {			
 			for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
 				s += rectHead + ' y="' + row*tileH + '"" x="' + col*tileW +'"';
-				s += qrCodeAlg.isDark(row, col) ? foreRect : backRect;
+				s += qrCodeAlg.modules[row][ col] ? foreRect : backRect;
 			}
 		}
 		s += '</svg>';
