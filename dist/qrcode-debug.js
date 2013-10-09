@@ -79,7 +79,7 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
         //绘制
         for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
             for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
-                ctx.fillStyle = qrCodeAlg.isDark(row, col) ? this.options.foreground : this.options.background;
+                ctx.fillStyle = qrCodeAlg.modules[row][col] ? this.options.foreground : this.options.background;
                 var w = Math.ceil((col + 1) * tileW) - Math.floor(col * tileW);
                 var h = Math.ceil((row + 1) * tileW) - Math.floor(row * tileW);
                 ctx.fillRect(Math.round(col * tileW), Math.round(row * tileH), w, h);
@@ -103,7 +103,7 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
         for (var row = 0; row < l; row++) {
             s.push('<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH + 'px">');
             for (var col = 0; col < l; col++) {
-                s.push(qrCodeAlg.isDark(row, col) ? foreTd : backTd);
+                s.push(qrCodeAlg.modules[row][col] ? foreTd : backTd);
             }
             s.push("</tr>");
         }
@@ -125,7 +125,7 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
         for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
             for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
                 s += rectHead + ' y="' + row * tileH + '"" x="' + col * tileW + '"';
-                s += qrCodeAlg.isDark(row, col) ? foreRect : backRect;
+                s += qrCodeAlg.modules[row][col] ? foreRect : backRect;
             }
         }
         s += "</svg>";
@@ -162,18 +162,6 @@ define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, mod
     QRCodeAlg.prototype = {
         constructor: QRCodeAlg,
         /**
-		 * 查看二维码矩阵
-		 * @param  {num} row 行坐标
-		 * @param  {num} col 列坐标
-		 * @return {bool} 1为true 0为false
-		 */
-        isDark: function(row, col) {
-            if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) {
-                throw new Error(row + "," + col);
-            }
-            return this.modules[row][col];
-        },
-        /**
 		 * 获取二维码矩阵大小
 		 * @return {num} 矩阵大小
 		 */
@@ -198,9 +186,6 @@ define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, mod
             this.modules = new Array(this.moduleCount);
             for (var row = 0; row < this.moduleCount; row++) {
                 this.modules[row] = new Array(this.moduleCount);
-                for (var col = 0; col < this.moduleCount; col++) {
-                    this.modules[row][col] = null;
-                }
             }
             this.setupPositionProbePattern(0, 0);
             this.setupPositionProbePattern(this.moduleCount - 7, 0);
@@ -240,7 +225,7 @@ define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, mod
             var pattern = 0;
             var bestModules = null;
             for (var i = 0; i < 8; i++) {
-                var tempModules = this.makeImpl(i);
+                this.makeImpl(i);
                 var lostPoint = QRUtil.getLostPoint(this);
                 if (i == 0 || minLostPoint > lostPoint) {
                     minLostPoint = lostPoint;
@@ -353,20 +338,20 @@ define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, mod
             for (var i = 0, l = this.data.length; i < l; i++) {
                 buffer.put(this.data.charCodeAt(i), 8);
             }
-            if (buffer.getLengthInBits() + 4 <= this.totalDataCount * 8) {
+            if (buffer.length + 4 <= this.totalDataCount * 8) {
                 buffer.put(0, 4);
             }
             // padding
-            while (buffer.getLengthInBits() % 8 != 0) {
+            while (buffer.length % 8 != 0) {
                 buffer.putBit(false);
             }
             // padding
             while (true) {
-                if (buffer.getLengthInBits() >= this.totalDataCount * 8) {
+                if (buffer.length >= this.totalDataCount * 8) {
                     break;
                 }
                 buffer.put(QRCodeAlg.PAD0, 8);
-                if (buffer.getLengthInBits() >= this.totalDataCount * 8) {
+                if (buffer.length >= this.totalDataCount * 8) {
                     break;
                 }
                 buffer.put(QRCodeAlg.PAD1, 8);
@@ -590,71 +575,85 @@ define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, mod
 		获取评价
 		 */
         getLostPoint: function(qrCode) {
-            var moduleCount = qrCode.getModuleCount();
-            var lostPoint = 0;
-            // LEVEL1
+            var moduleCount = qrCode.getModuleCount(), lostPoint = 0, darkCount = 0;
             for (var row = 0; row < moduleCount; row++) {
+                var sameCount = 0;
+                var head = qrCode.modules[row][0];
                 for (var col = 0; col < moduleCount; col++) {
-                    var sameCount = 0;
-                    var dark = qrCode.modules[row][col];
-                    for (var r = -1; r <= 1; r++) {
-                        if (row + r < 0 || moduleCount <= row + r) {
-                            continue;
-                        }
-                        for (var c = -1; c <= 1; c++) {
-                            if (col + c < 0 || moduleCount <= col + c) {
-                                continue;
-                            }
-                            if (r == 0 && c == 0) {
-                                continue;
-                            }
-                            if (dark == qrCode.modules[row + r][col + c]) {
-                                sameCount++;
+                    var current = qrCode.modules[row][col];
+                    //level 3 评价 
+                    if (col < moduleCount - 6) {
+                        if (current && !qrCode.modules[row][col + 1] && qrCode.modules[row][col + 2] && qrCode.modules[row][col + 3] && qrCode.modules[row][col + 4] && !qrCode.modules[row][col + 5] && qrCode.modules[row][col + 6]) {
+                            if (col < moduleCount - 10) {
+                                if (qrCode.modules[row][col + 7] && qrCode.modules[row][col + 8] && qrCode.modules[row][col + 9] && qrCode.modules[row][col + 10]) {
+                                    lostPoint += 40;
+                                }
+                            } else if (col > 3) {
+                                if (qrCode.modules[row][col - 1] && qrCode.modules[row][col - 2] && qrCode.modules[row][col - 3] && qrCode.modules[row][col - 4]) {
+                                    lostPoint += 40;
+                                }
                             }
                         }
                     }
-                    if (sameCount > 5) {
-                        lostPoint += 3 + sameCount - 5;
+                    //level 2 评价
+                    if (row < moduleCount - 1 && col < moduleCount - 1) {
+                        var count = 0;
+                        if (current) count++;
+                        if (qrCode.modules[row + 1][col]) count++;
+                        if (qrCode.modules[row][col + 1]) count++;
+                        if (qrCode.modules[row + 1][col + 1]) count++;
+                        if (count == 0 || count == 4) {
+                            lostPoint += 3;
+                        }
                     }
-                }
-            }
-            // LEVEL2
-            for (var row = 0; row < moduleCount - 1; row++) {
-                for (var col = 0; col < moduleCount - 1; col++) {
-                    var count = 0;
-                    if (qrCode.modules[row][col]) count++;
-                    if (qrCode.modules[row + 1][col]) count++;
-                    if (qrCode.modules[row][col + 1]) count++;
-                    if (qrCode.modules[row + 1][col + 1]) count++;
-                    if (count == 0 || count == 4) {
-                        lostPoint += 3;
+                    //level 1 评价
+                    if (head ^ current) {
+                        sameCount++;
+                    } else {
+                        head = current;
+                        if (sameCount >= 5) {
+                            lostPoint += 3 + sameCount - 5;
+                        }
+                        sameCount = 1;
                     }
-                }
-            }
-            // LEVEL3
-            for (var row = 0; row < moduleCount; row++) {
-                for (var col = 0; col < moduleCount - 6; col++) {
-                    if (qrCode.modules[row][col] && !qrCode.modules[row][col + 1] && qrCode.modules[row][col + 2] && qrCode.modules[row][col + 3] && qrCode.modules[row][col + 4] && !qrCode.modules[row][col + 5] && qrCode.modules[row][col + 6]) {
-                        lostPoint += 40;
-                    }
-                }
-            }
-            for (var col = 0; col < moduleCount; col++) {
-                for (var row = 0; row < moduleCount - 6; row++) {
-                    if (qrCode.modules[row][col] && !qrCode.modules[row + 1][col] && qrCode.modules[row + 2][col] && qrCode.modules[row + 3][col] && qrCode.modules[row + 4][col] && !qrCode.modules[row + 5][col] && qrCode.modules[row + 6][col]) {
-                        lostPoint += 40;
-                    }
-                }
-            }
-            // LEVEL4
-            var darkCount = 0;
-            for (var col = 0; col < moduleCount; col++) {
-                for (var row = 0; row < moduleCount; row++) {
-                    if (qrCode.modules[row][col]) {
+                    //level 4 评价
+                    if (current) {
                         darkCount++;
                     }
                 }
             }
+            for (var col = 0; col < moduleCount; col++) {
+                var sameCount = 0;
+                var head = qrCode.modules[0][col];
+                for (var row = 0; row < moduleCount; row++) {
+                    var current = qrCode.modules[row][col];
+                    //level 3 评价
+                    if (row < moduleCount - 6) {
+                        if (current && !qrCode.modules[row + 1][col] && qrCode.modules[row + 2][col] && qrCode.modules[row + 3][col] && qrCode.modules[row + 4][col] && !qrCode.modules[row + 5][col] && qrCode.modules[row + 6][col]) {
+                            if (row < moduleCount - 10) {
+                                if (qrCode.modules[row + 7][col] && qrCode.modules[row + 8][col] && qrCode.modules[row + 9][col] && qrCode.modules[row + 10][col]) {
+                                    lostPoint += 40;
+                                }
+                            } else if (row > 3) {
+                                if (qrCode.modules[row - 1][col] && qrCode.modules[row - 2][col] && qrCode.modules[row - 3][col] && qrCode.modules[row - 4][col]) {
+                                    lostPoint += 40;
+                                }
+                            }
+                        }
+                    }
+                    //level 1 评价
+                    if (head ^ current) {
+                        sameCount++;
+                    } else {
+                        head = current;
+                        if (sameCount >= 5) {
+                            lostPoint += 3 + sameCount - 5;
+                        }
+                        sameCount = 1;
+                    }
+                }
+            }
+            // LEVEL4
             var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
             lostPoint += ratio * 10;
             return lostPoint;
@@ -858,9 +857,6 @@ define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, mod
             for (var i = 0; i < length; i++) {
                 this.putBit((num >>> length - i - 1 & 1) == 1);
             }
-        },
-        getLengthInBits: function() {
-            return this.length;
         },
         putBit: function(bit) {
             var bufIndex = Math.floor(this.length / 8);
