@@ -95,12 +95,15 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
 	 */
     qrcode.prototype.createTable = function(qrCodeAlg) {
         //创建table节点
-        var $table = $('<table style="border:0px; margin:0px; padding:0px; border-collapse:collapse; background-color: ' + this.options.background + ';"></table>');
+        var s = [];
+        s.push('<table style="border:0px; margin:0px; padding:0px; border-collapse:collapse; background-color: ' + this.options.background + ';">');
         // 计算每个节点的长宽；取整，防止点之间出现分离
         var tileW = Math.floor(this.options.width / qrCodeAlg.getModuleCount());
         var tileH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
         // 绘制二维码
-        var s = [], foreTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.foreground + '"></td>', backTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.background + '"></td>', l = qrCodeAlg.getModuleCount();
+        foreTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.foreground + '"></td>', 
+        backTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.background + '"></td>', 
+        l = qrCodeAlg.getModuleCount();
         for (var row = 0; row < l; row++) {
             s.push('<tr style="border:0px; margin:0px; padding:0px; height: ' + tileH + 'px">');
             for (var col = 0; col < l; col++) {
@@ -108,8 +111,8 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
             }
             s.push("</tr>");
         }
-        $table.html(s.join(""));
-        // 返回table节点
+        s.push("</table>");
+        var $table = $(s.join(""));
         return $table[0];
     };
     /**
