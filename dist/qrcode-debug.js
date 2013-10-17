@@ -1,4 +1,4 @@
-define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], function(require, exports, module) {
+define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var QRCodeAlg = require("./qrcodealg-debug");
     var qrcodeAlgObjCache = [];
@@ -112,8 +112,9 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
             s.push("</tr>");
         }
         s.push("</table>");
-        var $table = $(s.join(""));
-        return $table[0];
+        var span = document.createElement("span");
+        span.innerHTML = s.join("");
+        return span.firstChild;
     };
     /**
 	 * 使用SVG开绘制二维码
@@ -140,7 +141,7 @@ define("alipay/qrcode/1.0.2/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
     module.exports = qrcode;
 });
 
-define("alipay/qrcode/1.0.2/qrcodealg-debug", [], function(require, exports, module) {
+define("alipay/qrcode/1.0.3/qrcodealg-debug", [], function(require, exports, module) {
     /**
 	 * 二维码算法实现
 	 * @param {string} data              要编码的信息字符串

@@ -116,10 +116,10 @@ define(function(require, exports, module) {
 			s.push('</tr>'); 
 		}
 		s.push('</table>');
+		var span = document.createElement("span");
+    span.innerHTML=s.join('');
 
-		var $table = $(s.join(''));
-	
-		return $table[0];
+		return span.firstChild;
 	};
 	
 
