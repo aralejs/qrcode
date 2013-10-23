@@ -100,6 +100,12 @@ define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
         // 计算每个节点的长宽；取整，防止点之间出现分离
         var tileW = Math.floor(this.options.width / qrCodeAlg.getModuleCount());
         var tileH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
+        if (tileW < 2) {
+            tileW = 2;
+        }
+        if (tileH < 2) {
+            tileH = 2;
+        }
         // 绘制二维码
         foreTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.foreground + '"></td>', 
         backTd = '<td style="border:0px; margin:0px; padding:0px; width:' + tileW + "px; background-color: " + this.options.background + '"></td>', 

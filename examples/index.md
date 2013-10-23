@@ -20,8 +20,8 @@ seajs.use(['$','qrcode'], function($, qrcode){
 		render: "table",
 		correctLevel: 0,
 		text	: "http://www.alipay.com/hello",
-		width: 250,
-		height: 250	
+		width: 1,
+		height: 1	
 	});
 	$('#qrcodeTable').append(qrnode);
 });
