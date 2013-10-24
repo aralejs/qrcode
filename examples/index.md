@@ -19,7 +19,7 @@ seajs.use(['$','qrcode'], function($, qrcode){
 	var qrnode = new qrcode({
 		render: "table",
 		correctLevel: 0,
-		text	: "http://www.alipay.com/hello",
+		text	: 'http://www.alipay.com/hello',
 		width: 1,
 		height: 1	
 	});
