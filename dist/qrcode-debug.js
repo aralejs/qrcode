@@ -102,14 +102,14 @@ define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
         tileW = caculateW = Math.floor(this.options.width / qrCodeAlg.getModuleCount());
         tileH = caculateH = Math.floor(this.options.height / qrCodeAlg.getModuleCount());
         if (caculateW <= 0) {
-            if (qrCodeAlg.getModuleCount() < 250) {
+            if (qrCodeAlg.getModuleCount() < 80) {
                 tileW = 2;
             } else {
                 tileW = 1;
             }
         }
         if (caculateH <= 0) {
-            if (qrCodeAlg.getModuleCount() < 250) {
+            if (qrCodeAlg.getModuleCount() < 80) {
                 tileH = 2;
             } else {
                 tileH = 1;
