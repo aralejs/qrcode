@@ -1,16 +1,16 @@
 {
-  "family": "alipay",
+  "family": "arale",
   "name": "qrcode",
   "version": "1.0.3",
   "description": "二维码组件",
-  "homepage": "http://gitlab.alibaba-inc.com/alipay-js/qrcode",
+  "homepage": "http://aralejs.org/qrcode",
   "author": "倚松 <jiasong.hjs@alibaba-inc.com>",
   "repository": {
     "type": "git",
-    "url": "http://gitlab.alibaba-inc.com/alipay-js/qrcode"
+    "url": "git@github.com:aralejs/qrcode.git"
   },
   "bugs": {
-    "url": "http://gitlab.alibaba-inc.com/alipay-js/qrcode/issues"
+    "url": "https://github.com/aralejs/qrcode/issues"
   },
   "keywords": ["qrcode", "二维码"],
   "licenses": "MIT",
