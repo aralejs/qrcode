@@ -1,4 +1,3 @@
-
 define(function(require) {
 
   var qrcode = require('qrcode');
@@ -88,11 +87,5 @@ define(function(require) {
     it('中文容错', function() {
       var qrnode = new qrcode('你好');
     });
-
-
-
-
   });
-
 });
-
