@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 	/**
 	 * 二维码构造函数，主要用于绘制
 	 * @param  {参数列表} opt 传递参数
-	 * @return {}     
+	 * @return {}
 	 */	
 	var qrcode = function(opt) {
 		if (typeof opt === 'string') { // 只编码ASCII字符串
@@ -25,7 +25,7 @@ define(function(require, exports, module) {
 			foreground: "#000000"
 		}, opt);
 
-		//使用QRCodeAlg创建二维码结构 
+		//使用QRCodeAlg创建二维码结构
 		var qrCodeAlg = null;
 		for(var i = 0, l = qrcodeAlgObjCache.length; i < l; i++){
 			if(qrcodeAlgObjCache[i].text == this.options.text && qrcodeAlgObjCache[i].text.correctLevel == this.options.correctLevel){
@@ -37,7 +37,7 @@ define(function(require, exports, module) {
 		  qrCodeAlg = new QRCodeAlg(this.options.text, this.options.correctLevel);
 		  qrcodeAlgObjCache.push({text:this.options.text, correctLevel: this.options.correctLevel, obj:qrCodeAlg});
 		}
-		
+
 		if(this.options.render){
 			switch (this.options.render){
 				case "canvas":
@@ -54,11 +54,11 @@ define(function(require, exports, module) {
 	};
 	/**
 	 * 使用Canvas来画二维码
-	 * @return {} 
+	 * @return {}
 	 */
-	
+
 	qrcode.prototype.createDefault = function(qrCodeAlg) {
-		var canvas = document.createElement('canvas'); 
+		var canvas = document.createElement('canvas');
 		if(canvas.getContext)
 			return this.createCanvas(qrCodeAlg);
 		SVG_NS = 'http://www.w3.org/2000/svg';
@@ -91,7 +91,7 @@ define(function(require, exports, module) {
 	};
 	/**
 	 * 使用table来绘制二维码
-	 * @return {} 
+	 * @return {}
 	 */
 	qrcode.prototype.createTable = function(qrCodeAlg) {
 		//创建table节点
@@ -128,7 +128,7 @@ define(function(require, exports, module) {
 			for (var col = 0; col < l; col++) {
 				s.push(qrCodeAlg.modules[row][col] ? foreTd : backTd);
 			}
-			s.push('</tr>'); 
+			s.push('</tr>');
 		}
 		s.push('</table>');
 		var span = document.createElement("span");
@@ -136,11 +136,10 @@ define(function(require, exports, module) {
 
 		return span.firstChild;
 	};
-	
 
 	/**
 	 * 使用SVG开绘制二维码
-	 * @return {} 
+	 * @return {}
 	 */
 	qrcode.prototype.createSVG = function(qrCodeAlg) {
 		var s = '<svg xmlns="http://www.w3.org/2000/svg" height="'+this.options.height+'" width="'+this.options.width+'">';
@@ -151,7 +150,7 @@ define(function(require, exports, module) {
 		    foreRect = ' width="'+tileW+'" height="'+tileH+'" fill="'+this.options.foreground+'"></rect>',
 				backRect = ' width="'+tileW+'" height="'+tileH+'" fill="'+this.options.background+'"></rect>';
 		//绘制二维码
-		for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {			
+		for (var row = 0; row < qrCodeAlg.getModuleCount(); row++) {
 			for (var col = 0; col < qrCodeAlg.getModuleCount(); col++) {
 				s += rectHead + ' y="' + row*tileH + '"" x="' + col*tileW +'"';
 				s += qrCodeAlg.modules[row][ col] ? foreRect : backRect;

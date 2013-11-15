@@ -35,7 +35,7 @@ define(function(require, exports, module) {
 		},
 		/**
 		 * 设置二位矩阵功能图形
-		 * @param  {bool} test 表示是否在寻找最好掩膜阶段        
+		 * @param  {bool} test 表示是否在寻找最好掩膜阶段
 		 * @param  {num} maskPattern 掩膜的版本
 		 */
 		makeImpl: function(maskPattern) {
