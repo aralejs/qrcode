@@ -3,11 +3,11 @@
   "name": "qrcode",
   "version": "1.0.3",
   "description": "二维码绘制模块",
-  "homepage": "http://aralejs.org/qrcode",
+  "homepage": "http://aralejs.org/qrcode/",
   "author": "倚松 <jiasong.hjs@alibaba-inc.com>",
   "repository": {
     "type": "git",
-    "url": "git@github.com:aralejs/qrcode.git"
+    "url": "https://github.com/aralejs/qrcode/"
   },
   "bugs": {
     "url": "https://github.com/aralejs/qrcode/issues"
