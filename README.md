@@ -2,9 +2,10 @@
 
 ---
 
-[![Build Status](http://toast.corp.taobao.com/task/state/id/3476)](http://toast.corp.taobao.com/task/view/id/3476)
+[![Build Status](https://travis-ci.org/aralejs/qrcode.png)](https://travis-ci.org/aralejs/qrcode)
+[![Coverage Status](https://coveralls.io/repos/aralejs/qrcode/badge.png?branch=master)](https://coveralls.io/r/aralejs/qrcode)
 
-二维码组件，用于绘制二维码
+二维码组件，用于绘制二维码。
 
 注意：该组件只支持ASCII字符串
 
