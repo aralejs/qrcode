@@ -1,11 +1,11 @@
-define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], function(require, exports, module) {
+define("arale/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], function(require, exports, module) {
     var $ = require("$-debug");
     var QRCodeAlg = require("./qrcodealg-debug");
     var qrcodeAlgObjCache = [];
     /**
 	 * 二维码构造函数，主要用于绘制
 	 * @param  {参数列表} opt 传递参数
-	 * @return {}     
+	 * @return {}
 	 */
     var qrcode = function(opt) {
         if (typeof opt === "string") {
@@ -24,7 +24,7 @@ define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
             background: "#ffffff",
             foreground: "#000000"
         }, opt);
-        //使用QRCodeAlg创建二维码结构 
+        //使用QRCodeAlg创建二维码结构
         var qrCodeAlg = null;
         for (var i = 0, l = qrcodeAlgObjCache.length; i < l; i++) {
             if (qrcodeAlgObjCache[i].text == this.options.text && qrcodeAlgObjCache[i].text.correctLevel == this.options.correctLevel) {
@@ -59,7 +59,7 @@ define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
     };
     /**
 	 * 使用Canvas来画二维码
-	 * @return {} 
+	 * @return {}
 	 */
     qrcode.prototype.createDefault = function(qrCodeAlg) {
         var canvas = document.createElement("canvas");
@@ -91,7 +91,7 @@ define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
     };
     /**
 	 * 使用table来绘制二维码
-	 * @return {} 
+	 * @return {}
 	 */
     qrcode.prototype.createTable = function(qrCodeAlg) {
         //创建table节点
@@ -133,7 +133,7 @@ define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
     };
     /**
 	 * 使用SVG开绘制二维码
-	 * @return {} 
+	 * @return {}
 	 */
     qrcode.prototype.createSVG = function(qrCodeAlg) {
         var s = '<svg xmlns="http://www.w3.org/2000/svg" height="' + this.options.height + '" width="' + this.options.width + '">';
@@ -156,7 +156,7 @@ define("alipay/qrcode/1.0.3/qrcode-debug", [ "$-debug", "./qrcodealg-debug" ], f
     module.exports = qrcode;
 });
 
-define("alipay/qrcode/1.0.3/qrcodealg-debug", [], function(require, exports, module) {
+define("arale/qrcode/1.0.3/qrcodealg-debug", [], function(require, exports, module) {
     /**
 	 * 二维码算法实现
 	 * @param {string} data              要编码的信息字符串
@@ -198,7 +198,7 @@ define("alipay/qrcode/1.0.3/qrcodealg-debug", [], function(require, exports, mod
         },
         /**
 		 * 设置二位矩阵功能图形
-		 * @param  {bool} test 表示是否在寻找最好掩膜阶段        
+		 * @param  {bool} test 表示是否在寻找最好掩膜阶段
 		 * @param  {num} maskPattern 掩膜的版本
 		 */
         makeImpl: function(maskPattern) {
