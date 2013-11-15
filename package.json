@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/aralejs/qrcode/issues"
   },
-  "keywords": ["qrcode", "二维码"],
+  "keywords": ["utility", "qrcode", "二维码"],
   "licenses": "MIT",
   "spm": {
     "output": ["qrcode.js"],
