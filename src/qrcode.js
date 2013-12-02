@@ -141,7 +141,7 @@ define(function(require, exports, module) {
 	 * 使用SVG开绘制二维码
 	 * @return {}
 	 */
-	qrcode.prototype.function createSVG(qrCodeAlg){
+	qrcode.prototype = function createSVG(qrCodeAlg){
 	    var x, dx, y, dy,
 	    	  moduleCount = qrCodeAlg.getModuleCount(),
 	    	  scale = this.options.height / this.options.width,
