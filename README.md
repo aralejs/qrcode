@@ -7,7 +7,7 @@
 
 二维码组件，用于绘制二维码。
 
-注意：该组件只支持ASCII字符串
+已添加UTF-8编码，中文生成的二维码扫描不会出现乱码。
 
 [二维码编码原理](http://www.thonky.com/qr-code-tutorial/)
 

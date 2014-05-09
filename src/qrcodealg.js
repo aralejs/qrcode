@@ -1,4 +1,46 @@
 define(function(require, exports, module) {
+
+	/**
+	 * 获取单个字符的utf8编码
+	 * unicode BMP平面约65535个字符
+	 * @param {num} code
+	 * return {array}
+	 */
+	function unicodeFormat8(code){
+		// 1 byte
+		if(code < 128){
+			return [code];
+		// 2 bytes
+		}else if(code < 2048){
+			c0 = 192 + (code >> 6);
+			c1 = 128 + (code & 63);
+			return [c0, c1];
+		// 3 bytes
+		}else{
+			c0 = 224 + (code >> 12);
+			c1 = 128 + (code >> 6 & 63);
+			c2 = 128 + (code & 63);
+			return [c0, c1, c2];
+		}
+	}
+
+	/**
+	 * 获取字符串的utf8编码字节串
+	 * @param {string} string
+	 * @return {array}
+	 */
+	function getUTF8Bytes(string){
+		var utf8codes = [];
+		for(var i=0; i<string.length; i++){
+			var code = string.charCodeAt(i);
+			var utf8 = unicodeFormat8(code);
+			for(var j=0; j<utf8.length; j++){
+				utf8codes.push(utf8[j]);
+			}
+		}
+		return utf8codes;
+	}
+
 	/**
 	 * 二维码算法实现
 	 * @param {string} data              要编码的信息字符串
@@ -13,6 +55,7 @@ define(function(require, exports, module) {
 		this.rsBlocks = null; //版本数据信息
 		this.totalDataCount = -1; //可使用的数据量
 		this.data = data;
+		this.utf8bytes = getUTF8Bytes(data);
 		this.make();
 	}
 
@@ -226,9 +269,9 @@ define(function(require, exports, module) {
 			var buffer = new QRBitBuffer();
 			var lengthBits = this.typeNumber > 9 ? 16 : 8;
 			buffer.put(4, 4); //添加模式
-			buffer.put(this.data.length, lengthBits);
-			for (var i = 0, l = this.data.length; i < l; i++) {
-				buffer.put(this.data.charCodeAt(i), 8);
+			buffer.put(this.utf8bytes.length, lengthBits);
+			for (var i = 0, l = this.utf8bytes.length; i < l; i++) {
+				buffer.put(this.utf8bytes[i], 8);
 			}
 			if (buffer.length + 4 <= this.totalDataCount * 8) {
 				buffer.put(0, 4);
@@ -1070,7 +1113,7 @@ define(function(require, exports, module) {
 			}
 
 			var lengthBytes = typeNumber > 9 ? 2 : 1;
-			if (this.data.length + lengthBytes < totalDataCount || typeNumber == 40) {
+			if (this.utf8bytes.length + lengthBytes < totalDataCount || typeNumber == 40) {
 				this.typeNumber = typeNumber;
 				this.rsBlock = rsBlock;
 				this.totalDataCount = totalDataCount;
