@@ -2,6 +2,10 @@
 
 ---
 
+## 1.1.0
+
+`improved` 升级到 spm@3.x 规范。
+
 ## 1.0.3
 
 `tag:improved` 性能优化
