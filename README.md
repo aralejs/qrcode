@@ -2,6 +2,7 @@
 
 ---
 
+[![spm package](http://spmjs.io/badge/arale-qrcode)](http://spmjs.io/package/arale-qrcode)
 [![Build Status](https://travis-ci.org/aralejs/qrcode.png)](https://travis-ci.org/aralejs/qrcode)
 [![Coverage Status](https://coveralls.io/repos/aralejs/qrcode/badge.png?branch=master)](https://coveralls.io/r/aralejs/qrcode)
 
