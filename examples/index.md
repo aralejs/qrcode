@@ -9,7 +9,8 @@
 ````
 
 ````javascript
-seajs.use(['$','qrcode'], function($, qrcode){
+seajs.use(['index','jquery'], function(qrcode,$){
+console.log(qrcode);
 	var qrnode = new qrcode({
 		text: "http://www.alipay.com/hello?nice=to?meet=you?#3"
 	});
@@ -24,7 +25,7 @@ seajs.use(['$','qrcode'], function($, qrcode){
 ````
 
 ````javascript
-seajs.use(['$','qrcode'], function($, qrcode){
+seajs.use(['index','jquery'], function(qrcode,$){
 	var qrnode = new qrcode({
 		render: "table",
 		correctLevel: 0,
@@ -43,7 +44,7 @@ seajs.use(['$','qrcode'], function($, qrcode){
 ````
 
 ````javascript
-seajs.use(['$','qrcode'], function($, qrcode){
+seajs.use(['index','jquery'], function(qrcode,$){
 	var qrnode = new qrcode({
 		render: "canvas",
 		correctLevel: 0,
@@ -64,7 +65,7 @@ seajs.use(['$','qrcode'], function($, qrcode){
 ````
 
 ````javascript
-seajs.use(['$','qrcode'], function($, qrcode){
+seajs.use(['index','jquery'], function(qrcode,$){
 	var qrnode = new qrcode({
 		render: "svg",
 		text: "http://www.alipay.com/",
