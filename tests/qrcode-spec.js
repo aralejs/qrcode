@@ -86,4 +86,14 @@ describe('qrcode', function() {
   it('中文容错', function() {
     var qrnode = new qrcode('你好');
   });
+  it('设置logo', function() {
+    var qrnode = new qrcode({
+      image : 'https://t.alipayobjects.com/images/rmsweb/T1ZsxhXdxbXXXXXXXX.png'
+    });
+  });
+  it('设置pdground', function() {
+    var qrnode = new qrcode({
+      pdground : '#ff0000'
+    });
+  });
 });

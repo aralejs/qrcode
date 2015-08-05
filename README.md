@@ -62,4 +62,27 @@
 
 默认：`#000000`
 
+### pdground `color`
+
+三个角的颜色
+
+默认：foreground
+
+### image `string`
+
+码正中间图片的url
+
+默认：`''`
+
+### imageWidth `number`
+
+image的宽度，单位px
+
+默认：`30`
+
+### imageHeight `number`
+
+image的高度，单位px
+
+默认：`30`
 
