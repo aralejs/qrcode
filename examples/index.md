@@ -13,7 +13,6 @@
 ````javascript
 var qrcode = require('../index.js');
 var $ = require('jquery');
-console.log(qrcode);
 var qrnode = new qrcode({
 	text: "http://www.alipay.com/hello?nice=to?meet=you?#3"
 });
@@ -32,9 +31,13 @@ var $ = require('jquery');
 var qrnode = new qrcode({
 	render: "table",
 	correctLevel: 0,
+	pdground: '#00aaee',
 	text: 'http://www.alipay.com/hello',
-	width: 1,
-	height: 1
+	width: 100,
+	height: 100,
+	image : 'https://t.alipayobjects.com/images/rmsweb/T1ZsxhXdxbXXXXXXXX.png',
+	imageWidth: 30,
+	imageHeight: 30
 });
 $('#qrcodeTable').append(qrnode);
 ````
@@ -55,7 +58,11 @@ var qrnode = new qrcode({
 	width: 200,
 	height: 200,
 	background: "#eeeeee",
-	foreground: "#667766"
+	foreground: "#667766",
+	pdground: '#00aaee',
+	image : 'https://t.alipayobjects.com/images/rmsweb/T1ZsxhXdxbXXXXXXXX.png',
+	imageWidth: 30,
+	imageHeight: 30
 });
 $('#qrcodeCanvas').append(qrnode);
 ````
@@ -72,8 +79,12 @@ var $ = require('jquery');
 var qrnode = new qrcode({
 	render: "svg",
 	text: "http://www.alipay.com/",
-	width: 400,
-	height: 250
+	width: 300,
+	height: 300,
+	pdground: '#00aaee',
+	image : 'https://t.alipayobjects.com/images/rmsweb/T1ZsxhXdxbXXXXXXXX.png',
+	imageWidth: 60,
+	imageHeight: 60
 });
 $('#qrcodeSVG').append(qrnode);
 ````
