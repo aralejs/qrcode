@@ -844,7 +844,7 @@ QRPolynomial.prototype = {
 /*
 二维码各个版本信息[块数, 每块中的数据块数, 每块中的信息块数]
  */
-RS_BLOCK_TABLE = [
+var RS_BLOCK_TABLE = [
 
 // L
 // M
