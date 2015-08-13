@@ -16,7 +16,6 @@
   "spm": {
     "main": "index.js",
     "dependencies": {
-      "jquery": "1.7.2",
       "object-assign": "~3.0.0"
     },
     "devDependencies": {
