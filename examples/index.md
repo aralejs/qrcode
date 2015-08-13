@@ -4,7 +4,6 @@
 
 ## 采用默认方式画二维码"
 
-<script src="https://a.alipayobjects.com/jquery/1.7.2/jquery.js"></script>
 
 ````html
 <div id="qrcodeDefault"></div>
@@ -12,11 +11,10 @@
 
 ````javascript
 var qrcode = require('../index.js');
-var $ = require('jquery');
 var qrnode = new qrcode({
 	text: "http://www.alipay.com/hello?nice=to?meet=you?#3"
 });
-$('#qrcodeDefault').append(qrnode);
+document.getElementById('qrcodeDefault').appendChild(qrnode);
 ````
 
 ## 调用table画二维码
@@ -27,7 +25,6 @@ $('#qrcodeDefault').append(qrnode);
 
 ````javascript
 var qrcode = require('../index.js');
-var $ = require('jquery');
 var qrnode = new qrcode({
 	render: "table",
 	correctLevel: 0,
@@ -39,7 +36,7 @@ var qrnode = new qrcode({
 	imageWidth: 30,
 	imageHeight: 30
 });
-$('#qrcodeTable').append(qrnode);
+document.getElementById('qrcodeTable').appendChild(qrnode);
 ````
 
 ## 调用canvas画二维码
@@ -50,7 +47,6 @@ $('#qrcodeTable').append(qrnode);
 
 ````javascript
 var qrcode = require('../index.js');
-var $ = require('jquery');
 var qrnode = new qrcode({
 	render: "canvas",
 	correctLevel: 0,
@@ -64,7 +60,7 @@ var qrnode = new qrcode({
 	imageWidth: 30,
 	imageHeight: 30
 });
-$('#qrcodeCanvas').append(qrnode);
+document.getElementById('qrcodeCanvas').appendChild(qrnode);
 ````
 
 ## 调用svg画二维码
@@ -75,7 +71,6 @@ $('#qrcodeCanvas').append(qrnode);
 
 ````javascript
 var qrcode = require('../index.js');
-var $ = require('jquery');
 var qrnode = new qrcode({
 	render: "svg",
 	text: "http://www.alipay.com/",
@@ -86,5 +81,5 @@ var qrnode = new qrcode({
 	imageWidth: 60,
 	imageHeight: 60
 });
-$('#qrcodeSVG').append(qrnode);
+document.getElementById('qrcodeSVG').appendChild(qrnode);
 ````
