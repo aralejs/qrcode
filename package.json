@@ -1,6 +1,6 @@
 {
   "name": "arale-qrcode",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "二维码绘制模块",
   "homepage": "http://aralejs.org/qrcode/",
   "author": "倚松 <jiasong.hjs@alibaba-inc.com>",
