@@ -16,7 +16,7 @@
   "spm": {
     "main": "index.js",
     "dependencies": {
-      "object-assign": "~3.0.0"
+      "extend": "~1.0.0"
     },
     "devDependencies": {
       "expect.js": "0.3.1"

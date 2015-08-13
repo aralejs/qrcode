@@ -1,4 +1,4 @@
-var assign = require('object-assign');
+var extend = require('extend');
 var QRCodeAlg = require('./qrcodealg');
 var qrcodeAlgObjCache = [];
 
@@ -52,7 +52,7 @@ var qrcode = function(opt) {
         };
     }
     //设置默认参数
-    this.options = assign({}, {
+    this.options = extend({}, {
         text:"",
         render: "",
         width: 256,
@@ -94,7 +94,7 @@ var qrcode = function(opt) {
     return this.createDefault(qrCodeAlg);
 };
 
-assign(qrcode.prototype,{
+extend(qrcode.prototype,{
 
     createDefault (qrCodeAlg) {
         var canvas = document.createElement('canvas');
