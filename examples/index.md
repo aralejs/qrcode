@@ -12,7 +12,7 @@
 ````javascript
 var qrcode = require('../index.js');
 var qrnode = new qrcode({
-	text: "http://www.alipay.com/hello?nice=to?meet=you?#3"
+	text: 'http://www.alipay.com/'
 });
 document.getElementById('qrcodeDefault').appendChild(qrnode);
 ````
@@ -26,15 +26,12 @@ document.getElementById('qrcodeDefault').appendChild(qrnode);
 ````javascript
 var qrcode = require('../index.js');
 var qrnode = new qrcode({
-	render: "table",
+	render: 'table',
 	correctLevel: 0,
 	pdground: '#00aaee',
-	text: 'http://www.alipay.com/hello',
-	width: 100,
-	height: 100,
-	image : 'https://t.alipayobjects.com/images/rmsweb/T1ZsxhXdxbXXXXXXXX.png',
-	imageWidth: 30,
-	imageHeight: 30
+	text: 'http://www.alipay.com/',
+	size: 100,
+	image : 'https://t.alipayobjects.com/images/rmsweb/T1ZsxhXdxbXXXXXXXX.png'
 });
 document.getElementById('qrcodeTable').appendChild(qrnode);
 ````
@@ -48,17 +45,15 @@ document.getElementById('qrcodeTable').appendChild(qrnode);
 ````javascript
 var qrcode = require('../index.js');
 var qrnode = new qrcode({
-	render: "canvas",
+	render: 'canvas',
 	correctLevel: 0,
-	text: "http://www.alipay.com/hello",
-	width: 200,
-	height: 200,
-	background: "#eeeeee",
-	foreground: "#667766",
+	text: 'http://www.alipay.com/',
+	size: 300,
+	background: '#eeeeee',
+	foreground: '#667766',
 	pdground: '#00aaee',
 	image : 'https://t.alipayobjects.com/images/rmsweb/T1ZsxhXdxbXXXXXXXX.png',
-	imageWidth: 30,
-	imageHeight: 30
+	imageSize : 100
 });
 document.getElementById('qrcodeCanvas').appendChild(qrnode);
 ````
@@ -72,14 +67,13 @@ document.getElementById('qrcodeCanvas').appendChild(qrnode);
 ````javascript
 var qrcode = require('../index.js');
 var qrnode = new qrcode({
-	render: "svg",
-	text: "http://www.alipay.com/",
-	width: 300,
-	height: 300,
+	correctLevel: 0,
+	render: 'svg',
+	text: 'http://www.alipay.com/',
+	size: 200,
 	pdground: '#00aaee',
 	image : 'https://t.alipayobjects.com/images/rmsweb/T1ZsxhXdxbXXXXXXXX.png',
-	imageWidth: 60,
-	imageHeight: 60
+	imageSize:30
 });
 document.getElementById('qrcodeSVG').appendChild(qrnode);
 ````

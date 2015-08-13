@@ -1,1 +1,4 @@
 dist/
+node_modules/
+spm_modules/
+_site/
