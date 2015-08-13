@@ -27,6 +27,7 @@
   },
   "maintainers": [ "倚松 <jiasong.hjs@alibaba-inc.com>" ],
   "devDependencies": {
+    "spm": "~3.6.9",
     "nico": "*",
     "mocha-browser": "*",
     "jscoverage": "~0.3.7"
