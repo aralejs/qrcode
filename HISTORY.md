@@ -1,6 +1,10 @@
 # History
 
 ---
+## 3.0.1
+
+`tag:fixed` 预编译es6语法，解决被require时打包问题
+
 ## 3.0.0
 
 `tag:fixed` svg不能修改大小bug
