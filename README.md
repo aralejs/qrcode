@@ -72,3 +72,14 @@ image的宽和高，单位px
 
 默认：`30`
 
+
+## other
+
+支持script标签引用，暴露全局变量为 AraleQRCode
+
+```
+<script src='dist/arale-qrcode/3.0.2/lib/index.js'></script>
+<script> 
+	new AraleQRCode({...});
+</script>
+```

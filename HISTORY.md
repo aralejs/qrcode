@@ -1,6 +1,10 @@
 # History
 
 ---
+## 3.0.4
+
+`tag:new` 支付script引用的变量挂载
+
 ## 3.0.1
 
 `tag:fixed` 预编译es6语法，解决被require时打包问题
