@@ -10,7 +10,7 @@
 ````
 
 ````javascript
-var qrcode = require('../index.js');
+var qrcode = require('../src/index.js');
 var qrnode = new qrcode({
 	text: 'http://www.alipay.com/'
 });
@@ -24,7 +24,7 @@ document.getElementById('qrcodeDefault').appendChild(qrnode);
 ````
 
 ````javascript
-var qrcode = require('../index.js');
+var qrcode = require('../src/index.js');
 var qrnode = new qrcode({
 	render: 'table',
 	correctLevel: 0,
@@ -43,7 +43,7 @@ document.getElementById('qrcodeTable').appendChild(qrnode);
 ````
 
 ````javascript
-var qrcode = require('../index.js');
+var qrcode = require('../src/index.js');
 var qrnode = new qrcode({
 	render: 'canvas',
 	correctLevel: 0,
@@ -65,7 +65,7 @@ document.getElementById('qrcodeCanvas').appendChild(qrnode);
 ````
 
 ````javascript
-var qrcode = require('../index.js');
+var qrcode = require('../src/index.js');
 var qrnode = new qrcode({
 	correctLevel: 0,
 	render: 'svg',

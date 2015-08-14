@@ -1,6 +1,6 @@
 {
   "name": "arale-qrcode",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "二维码绘制模块",
   "homepage": "http://aralejs.org/qrcode/",
   "author": "倚松 <jiasong.hjs@alibaba-inc.com>",
@@ -14,9 +14,10 @@
   "keywords": ["utility", "qrcode", "二维码"],
   "licenses": "MIT",
   "spm": {
-    "main": "index.js",
+    "main": "lib/index.js",
     "dependencies": {
-      "extend": "~1.0.0"
+      "extend": "~1.0.0",
+      "jquery": "1.7.2"
     },
     "devDependencies": {
       "expect.js": "0.3.1"
@@ -25,7 +26,10 @@
       "babel" : {}
     }
   },
-  "maintainers": [ "倚松 <jiasong.hjs@alibaba-inc.com>" ],
+  "scripts": {
+    "babel": "babel src --out-dir lib",
+    "prepublish": "npm run babel"
+  },
   "devDependencies": {
     "spm": "~3.6.9",
     "nico": "*",
