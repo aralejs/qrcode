@@ -1,5 +1,5 @@
 
-var qrcode = require('../index.js');
+var qrcode = require('../src/index.js');
 var $ = require('jquery');
 var expect = require('expect.js');
 
