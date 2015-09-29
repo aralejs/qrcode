@@ -6,6 +6,7 @@
  */
 function unicodeFormat8(code){
 	// 1 byte
+	var c0, c1, c2;
 	if(code < 128){
 		return [code];
 	// 2 bytes
@@ -135,7 +136,7 @@ QRCodeAlg.prototype = {
 		var bestModules = null;
 
 		for (var i = 0; i < 8; i++) {
-			
+
 			this.makeImpl(i);
 
 			var lostPoint = QRUtil.getLostPoint(this);
@@ -221,16 +222,16 @@ QRCodeAlg.prototype = {
 	},
 	/**
 	 * 设置格式信息（纠错等级和掩膜版本）
-	 * @param  {bool} test        
+	 * @param  {bool} test
 	 * @param  {num} maskPattern 掩膜版本
-	 * @return {}             
+	 * @return {}
 	 */
 	setupTypeInfo: function(test, maskPattern) {
 
 		var data = (QRErrorCorrectLevel[this.errorCorrectLevel] << 3) | maskPattern;
 		var bits = QRUtil.getBCHTypeInfo(data);
 
-		// vertical		
+		// vertical
 		for (var i = 0; i < 15; i++) {
 
 			var mod = (!test && ((bits >> i) & 1) == 1);
@@ -298,7 +299,7 @@ QRCodeAlg.prototype = {
 	/**
 	 * 纠错码编码
 	 * @param  {buffer} buffer 数据编码
-	 * @return {[type]}        
+	 * @return {[type]}
 	 */
 	createBytes: function(buffer) {
 
@@ -375,9 +376,9 @@ QRCodeAlg.prototype = {
 	},
 	/**
 	 * 布置模块，构建最终信息
-	 * @param  {} data        
-	 * @param  {} maskPattern 
-	 * @return {}		
+	 * @param  {} data
+	 * @param  {} maskPattern
+	 * @return {}
 	 */
 	mapData: function(data, maskPattern) {
 
@@ -613,7 +614,7 @@ var QRUtil = {
 
         var current = qrCode.modules[row][col];
 
-        //level 3 评价 
+        //level 3 评价
         if( col < moduleCount-6){
           if (current && !qrCode.modules[row][ col + 1] && qrCode.modules[row][ col + 2] && qrCode.modules[row][ col + 3] && qrCode.modules[row][ col + 4] && !qrCode.modules[row][ col + 5] && qrCode.modules[row][ col + 6]) {
           	if(col < moduleCount-10){
@@ -812,7 +813,7 @@ QRPolynomial.prototype = {
 	/**
 	 * 多项式模运算
 	 * @param  {QRPolynomial} e 模多项式
-	 * @return {}   
+	 * @return {}
 	 */
 	mod: function(e) {
 		var tl = this.getLength(),
@@ -869,7 +870,7 @@ var RS_BLOCK_TABLE = [
 	[2, 35, 17],
 	[2, 35, 13],
 
-	// 4		
+	// 4
 	[1, 100, 80],
 	[2, 50, 32],
 	[2, 50, 24],
@@ -887,7 +888,7 @@ var RS_BLOCK_TABLE = [
 	[4, 43, 19],
 	[4, 43, 15],
 
-	// 7		
+	// 7
 	[2, 98, 78],
 	[4, 49, 31],
 	[2, 32, 14, 4, 33, 15],
@@ -905,7 +906,7 @@ var RS_BLOCK_TABLE = [
 	[4, 36, 16, 4, 37, 17],
 	[4, 36, 12, 4, 37, 13],
 
-	// 10		
+	// 10
 	[2, 86, 68, 2, 87, 69],
 	[4, 69, 43, 1, 70, 44],
 	[6, 43, 19, 2, 44, 20],
