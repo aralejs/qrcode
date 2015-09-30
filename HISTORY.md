@@ -1,6 +1,10 @@
 # History
 
 ---
+## 3.0.5
+
+`tag:fixed` canvas 模式在 Retina 下显示模糊
+
 ## 3.0.4
 
 `tag:new` 支付script引用的变量挂载

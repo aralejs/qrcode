@@ -9,14 +9,14 @@ var QRCodeAlg = require('./qrcodealg');
 * @param {Number} config.col 点y坐标
 * @param {Number} config.count 矩阵大小
 * @param {Number} config.options 组件的options
-* @return {String} 
+* @return {String}
 */
 var getForeGround = function(config){
     var options = config.options;
     if( options.pdground && (
-        (config.row > 1 && config.row < 5 && config.col >1 && config.col<5) 
+        (config.row > 1 && config.row < 5 && config.col >1 && config.col<5)
         || (config.row > (config.count - 6) && config.row < (config.count - 2) && config.col >1 && config.col<5)
-        || (config.row > 1 && config.row < 5 && config.col > (config.count - 6) && config.col < (config.count - 2)) 
+        || (config.row > 1 && config.row < 5 && config.col > (config.count - 6) && config.col < (config.count - 2))
     )){
         return options.pdground;
     }
@@ -30,21 +30,36 @@ var getForeGround = function(config){
 * @return {Boolean}
 */
 var inPositionDetection = function(row, col, count){
-    if( 
-        (row<7 && col<7) 
+    if(
+        (row<7 && col<7)
         || (row > (count - 8) && col < 7)
-        || (row < 7 && col >(count - 8) ) 
+        || (row < 7 && col >(count - 8) )
     ){
         return true;
     }
     return false;
 }
+/**
+* 获取当前屏幕的设备像素比 devicePixelRatio/backingStore
+* @param {context} 当前 canvas 上下文，可以为 window
+*/
+var getPixelRatio = function(context) {
+    var backingStore = context.backingStorePixelRatio
+        || context.webkitBackingStorePixelRatio
+        || context.mozBackingStorePixelRatio
+        || context.msBackingStorePixelRatio
+        || context.oBackingStorePixelRatio
+        || context.backingStorePixelRatio
+        || 1;
+
+    return (window.devicePixelRatio || 1) / backingStore;
+};
 
 /**
  * 二维码构造函数，主要用于绘制
  * @param  {参数列表} opt 传递参数
  * @return {}
- */    
+ */
 var qrcode = function(opt) {
     if (typeof opt === 'string') { // 只编码ASCII字符串
         opt = {
@@ -111,6 +126,10 @@ extend(qrcode.prototype,{
         var canvas = document.createElement('canvas');
         var ctx = canvas.getContext('2d');
         var count = qrCodeAlg.getModuleCount();
+        var ratio = getPixelRatio(ctx);
+        var size = options.size;
+        var ratioSize = size * ratio;
+        var ratioImgSize = options.imageSize * ratio;
         // preload img
         var loadImage = function(url,callback){
             var img = new Image();
@@ -122,11 +141,11 @@ extend(qrcode.prototype,{
         }
 
         //计算每个点的长宽
-        var tileW = (options.size / count).toPrecision(4);
-        var tileH = (options.size / count).toPrecision(4);
+        var tileW = (ratioSize / count).toPrecision(4);
+        var tileH = (ratioSize / count).toPrecision(4);
 
-        canvas.width = options.size;
-        canvas.height = options.size;
+        canvas.width = ratioSize;
+        canvas.height = ratioSize;
 
         //绘制
         for (var row = 0; row < count; row++) {
@@ -145,18 +164,20 @@ extend(qrcode.prototype,{
         }
         if(options.image){
             loadImage(options.image, function(img){
-                var x = ((options.size - options.imageSize)/2).toFixed(2);
-                var y = ((options.size - options.imageSize)/2).toFixed(2);
-                ctx.drawImage(img, x, y, options.imageSize, options.imageSize);
+                var x = ((ratioSize - ratioImgSize)/2).toFixed(2);
+                var y = ((ratioSize - ratioImgSize)/2).toFixed(2);
+                ctx.drawImage(img, x, y, ratioImgSize, ratioImgSize);
             });
         }
+        canvas.style.width = size + 'px';
+        canvas.style.height = size + 'px';
         return canvas;
     },
-    // table create 
+    // table create
     createTable (qrCodeAlg) {
         var options = this.options;
         var count = qrCodeAlg.getModuleCount();
-        
+
         // 计算每个节点的长宽；取整，防止点之间出现分离
         var tileW = Math.floor(options.size / count);
         var tileH = Math.floor(options.size / count);
@@ -198,12 +219,12 @@ extend(qrcode.prototype,{
             var height = tileH * count;
             var x = ((width - options.imageSize)/2).toFixed(2);
             var y = ((height - options.imageSize)/2).toFixed(2);
-            s.unshift(`<div style='position:relative; 
-                        width:${width}px; 
+            s.unshift(`<div style='position:relative;
+                        width:${width}px;
                         height:${height}px;'>`);
-            s.push(`<img src='${options.image}' 
-                        width='${options.imageSize}' 
-                        height='${options.imageSize}' 
+            s.push(`<img src='${options.image}'
+                        width='${options.imageSize}'
+                        height='${options.imageSize}'
                         style='position:absolute;left:${x}px; top:${y}px;'>`);
             s.push('</div>');
         }
