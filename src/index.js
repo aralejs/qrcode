@@ -140,12 +140,20 @@ extend(qrcode.prototype,{
             };
         }
 
-        //计算每个点的长宽
-        var tileW = (ratioSize / count).toPrecision(4);
-        var tileH = (ratioSize / count).toPrecision(4);
+        // 计算每个节点的长宽；取整，防止点之间出现分离
+        var tileW = Math.floor(ratioSize / count);
+        var tileH = Math.floor(ratioSize / count);
+        if(tileW <= 0){
+            tileW = count < 80 ? 2 : 1;
+        }
+        if(tileH <= 0){
+            tileH = count < 80 ? 2 : 1;
+        }
 
-        canvas.width = ratioSize;
-        canvas.height = ratioSize;
+        canvas.width = tileW * count;
+        canvas.height = tileH * count;
+
+        var currImageSize = ratioImgSize * (canvas.width / ratioSize);
 
         //绘制
         for (var row = 0; row < count; row++) {
@@ -164,9 +172,9 @@ extend(qrcode.prototype,{
         }
         if(options.image){
             loadImage(options.image, function(img){
-                var x = ((ratioSize - ratioImgSize)/2).toFixed(2);
-                var y = ((ratioSize - ratioImgSize)/2).toFixed(2);
-                ctx.drawImage(img, x, y, ratioImgSize, ratioImgSize);
+                var x = ((canvas.width - currImageSize)/2).toFixed(2);
+                var y = ((canvas.height - currImageSize)/2).toFixed(2);
+                ctx.drawImage(img, x, y, currImageSize, currImageSize);
             });
         }
         canvas.style.width = size + 'px';
