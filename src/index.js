@@ -28,7 +28,7 @@ var getForeGround = function(config){
 * @param  {col} 矩阵列
 * @param  {count} 矩阵大小
 * @return {Boolean}
-*/
+
 var inPositionDetection = function(row, col, count){
     if(
         (row<7 && col<7)
@@ -39,6 +39,7 @@ var inPositionDetection = function(row, col, count){
     }
     return false;
 }
+*/
 /**
 * 获取当前屏幕的设备像素比 devicePixelRatio/backingStore
 * @param {context} 当前 canvas 上下文，可以为 window
@@ -75,7 +76,8 @@ var qrcode = function(opt) {
         background: '#ffffff',
         foreground: '#000000',
         image : '',
-        imageSize: 30
+        imageSize: 30,
+        canvasClass: 'canvas-qrcode'
     }, opt);
 
     //使用QRCodeAlg创建二维码结构
@@ -141,8 +143,8 @@ extend(qrcode.prototype,{
         }
 
         // 计算每个节点的长宽；取整，防止点之间出现分离
-        var tileW = Math.floor(ratioSize / count);
-        var tileH = Math.floor(ratioSize / count);
+        var tileW = Math.floor(size / count);
+        var tileH = Math.floor(size / count);
         if(tileW <= 0){
             tileW = count < 80 ? 2 : 1;
         }
@@ -150,16 +152,18 @@ extend(qrcode.prototype,{
             tileH = count < 80 ? 2 : 1;
         }
 
-        canvas.width = tileW * count;
-        canvas.height = tileH * count;
+        var ratioTileW = tileW * ratio;
+        var ratioTileH = tileH * ratio;
+        canvas.width = ratioTileW * count;
+        canvas.height = ratioTileH * count;
 
-        var currImageSize = ratioImgSize * (canvas.width / ratioSize);
+        var currImageSize = Math.floor(ratioImgSize * (canvas.width / ratioSize));
 
         //绘制
         for (var row = 0; row < count; row++) {
             for (var col = 0; col < count; col++) {
-                var w = (Math.ceil((col + 1) * tileW) - Math.floor(col * tileW));
-                var h = (Math.ceil((row + 1) * tileW) - Math.floor(row * tileW));
+                var w = (Math.ceil((col + 1) * ratioTileW) - Math.floor(col * ratioTileW));
+                var h = (Math.ceil((row + 1) * ratioTileH) - Math.floor(row * ratioTileH));
                 var foreground = getForeGround({
                     row : row,
                     col : col,
@@ -167,7 +171,7 @@ extend(qrcode.prototype,{
                     options : options
                 });
                 ctx.fillStyle = qrCodeAlg.modules[row][col] ? foreground : options.background;
-                ctx.fillRect(Math.round(col * tileW), Math.round(row * tileH), w, h);
+                ctx.fillRect(Math.round(col * ratioTileW), Math.round(row * ratioTileH), w, h);
             }
         }
         if(options.image){
@@ -177,9 +181,17 @@ extend(qrcode.prototype,{
                 ctx.drawImage(img, x, y, currImageSize, currImageSize);
             });
         }
-        canvas.style.width = size + 'px';
-        canvas.style.height = size + 'px';
-        return canvas;
+        canvas.style.width = tileW * count + 'px';
+        canvas.style.height = tileH * count + 'px';
+        var s = [];
+        s.push(`<span class="${options.canvasClass}" style="width: ${tileW * count}px;height: ${tileW * count}px;
+            padding: ${(size-tileW * count)/2}px; display: inline-block">`);
+        s.push('</span>');
+        var span = document.createElement('span');
+        span.innerHTML = s.join('');
+        span.firstChild.appendChild(canvas);
+
+        return span.firstChild;
     },
     // table create
     createTable (qrCodeAlg) {

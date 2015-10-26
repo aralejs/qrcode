@@ -39,6 +39,16 @@ describe('qrcode', function() {
       foreground:'#011'
     });
   });
+  it('设置二维码容错水平', function() {
+    var qrnode = new qrcode({
+      correctLevel: 2
+    });
+  });
+  it('设置二维码className', function() {
+    var qrnode = new qrcode({
+      canvasClass: 'test-class'
+    });
+  });
   it('以table来显示', function() {
     var qrnode = new qrcode({
       render:'table'
@@ -61,9 +71,11 @@ describe('qrcode', function() {
   });
   it('最长字符串', function() {
     var s = '';
-    for(var i = 0; i < 2953; i++){
-      s += i%10;
+    var t = '0123456789';
+    for(var i = 0; i < 2950; i+=10){
+      s += t;
     }
+    s+='012';
     var qrnode = new qrcode({
       width:500,
       height:500,
@@ -73,8 +85,9 @@ describe('qrcode', function() {
   });
   it('超过最长字符串容错处理，截取前2953个字符', function() {
     var s = '';
-    for(var i = 0; i < 3000; i++){
-      s += i%10;
+    var t = '01234567890123456789';
+    for(var i = 0; i < 3000; i+=20){
+      s += t;
     }
     var qrnode = new qrcode({
       width:500,

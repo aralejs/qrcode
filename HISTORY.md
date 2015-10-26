@@ -1,6 +1,9 @@
 # History
-
 ---
+## 3.0.6
+
+`tag:fixed` 修复不能渲染小数点像素值问题
+
 ## 3.0.5
 
 `tag:fixed` canvas 模式在 Retina 下显示模糊
