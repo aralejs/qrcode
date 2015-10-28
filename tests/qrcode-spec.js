@@ -39,6 +39,11 @@ describe('qrcode', function() {
       foreground:'#011'
     });
   });
+  it('设置二维码容错水平', function() {
+    var qrnode = new qrcode({
+      correctLevel: 2
+    });
+  });
   it('以table来显示', function() {
     var qrnode = new qrcode({
       render:'table'

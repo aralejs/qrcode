@@ -28,7 +28,7 @@ var getForeGround = function(config){
 * @param  {col} 矩阵列
 * @param  {count} 矩阵大小
 * @return {Boolean}
-*/
+
 var inPositionDetection = function(row, col, count){
     if(
         (row<7 && col<7)
@@ -39,6 +39,7 @@ var inPositionDetection = function(row, col, count){
     }
     return false;
 }
+*/
 /**
 * 获取当前屏幕的设备像素比 devicePixelRatio/backingStore
 * @param {context} 当前 canvas 上下文，可以为 window
