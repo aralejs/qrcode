@@ -177,8 +177,8 @@ extend(qrcode.prototype,{
                 ctx.drawImage(img, x, y, currImageSize, currImageSize);
             });
         }
-        canvas.style.width = (canvas.width/ratio).toFixed(2) + 'px';
-        canvas.style.height = (canvas.height/ratio).toFixed(2) + 'px';
+        canvas.style.width = Math.floor(canvas.width/ratio) + 'px';
+        canvas.style.height = Math.floor(canvas.height/ratio) + 'px';
         return canvas;
     },
     // table create
