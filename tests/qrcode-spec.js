@@ -78,8 +78,9 @@ describe('qrcode', function() {
   });
   it('超过最长字符串容错处理，截取前2953个字符', function() {
     var s = '';
-    for(var i = 0; i < 3000; i++){
-      s += i%10;
+    var t = '0123456789';
+    for(var i = 0; i < 3000; i+=10){
+      s += t;
     }
     var qrnode = new qrcode({
       width:500,
