@@ -44,6 +44,11 @@ describe('qrcode', function() {
       correctLevel: 2
     });
   });
+  it('设置二维码className', function() {
+    var qrnode = new qrcode({
+      canvasClass: 'test-class'
+    });
+  });
   it('以table来显示', function() {
     var qrnode = new qrcode({
       render:'table'

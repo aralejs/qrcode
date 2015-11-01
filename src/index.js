@@ -76,7 +76,8 @@ var qrcode = function(opt) {
         background: '#ffffff',
         foreground: '#000000',
         image : '',
-        imageSize: 30
+        imageSize: 30,
+        canvasClass: 'canvas-qrcode'
     }, opt);
 
     //使用QRCodeAlg创建二维码结构
@@ -182,7 +183,15 @@ extend(qrcode.prototype,{
         }
         canvas.style.width = tileW * count + 'px';
         canvas.style.height = tileH * count + 'px';
-        return canvas;
+        var s = [];
+        s.push(`<span class="${options.canvasClass}" style="width: ${tileW * count}px;height: ${tileW * count}px;
+            padding: ${(size-tileW * count)/2}px; display: inline-block">`);
+        s.push('</span>');
+        var span = document.createElement('span');
+        span.innerHTML = s.join('');
+        span.firstChild.appendChild(canvas);
+
+        return span.firstChild;
     },
     // table create
     createTable (qrCodeAlg) {
