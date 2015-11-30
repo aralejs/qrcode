@@ -70,9 +70,10 @@ describe('qrcode', function() {
     });
   });
   it('最长字符串', function() {
-    var s = '0123456789';
+    var s = '';
+    var t = '0123456789';
     for(var i = 0; i < 295; i+=10){
-      s += i%10;
+      s += t;
     }
     s+='012';
     var qrnode = new qrcode({
