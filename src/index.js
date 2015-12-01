@@ -184,7 +184,7 @@ extend(qrcode.prototype,{
         canvas.style.width = tileW * count + 'px';
         canvas.style.height = tileH * count + 'px';
         var s = [];
-        s.push(`<span class="${options.canvasClass}" style="width: ${tileW * count}px;height: ${tileW * count}px;
+        s.push(`<span class="${options.canvasClass}" style="width: ${tileW * count}px;height: ${tileH * count}px;
             padding: ${(size-tileW * count)/2}px; display: inline-block">`);
         s.push('</span>');
         var span = document.createElement('span');
