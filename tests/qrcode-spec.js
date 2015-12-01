@@ -72,7 +72,7 @@ describe('qrcode', function() {
   it('最长字符串', function() {
     var s = '';
     var t = '0123456789';
-    for(var i = 0; i < 295; i+=10){
+    for(var i = 0; i < 2950; i+=10){
       s += t;
     }
     s+='012';
@@ -86,7 +86,7 @@ describe('qrcode', function() {
   it('超过最长字符串容错处理，截取前2953个字符', function() {
     var s = '';
     var t = '01234567890123456789';
-    for(var i = 0; i < 150; i+=20){
+    for(var i = 0; i < 3000; i+=20){
       s += t;
     }
     var qrnode = new qrcode({
